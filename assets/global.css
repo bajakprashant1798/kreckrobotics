@@ -1,0 +1,50 @@
+/* 1. Font smoothing for modern, premium look */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;  /* Native smooth scroll as fallback */
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  background: #fff;
+  color: #23272b;
+  font-family: 'Open Sans', 'Poppins', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* 3. Section padding helpers */
+.section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.section-lg {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+/* 5. Responsive image container (can be used for your product/panel images) */
+.img-fluid {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 6. Hide scrollbars for a clean look (optional, can comment out) */
+/* ::-webkit-scrollbar { width: 0; background: transparent; } */
+
+/* 7. Prevent text selection on logos or hero headings if desired */
+.noselect {
+  user-select: none;
+}
+
+/* 8. Fix for horizontal overflow on mobile */
+html, body {
+  overflow-x: hidden;
+}
