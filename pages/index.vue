@@ -143,7 +143,7 @@ onMounted(() => {
         endTrigger: panelSection.value,
         end: 'center 45%',
         scrub: true,
-        markers: true,
+        // markers: true,
         onEnter: () => featureLinesVisible.value = true,
         onLeaveBack: () => featureLinesVisible.value = false,
       }

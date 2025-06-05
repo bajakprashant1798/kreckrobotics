@@ -10,8 +10,11 @@
       }"
     >
       <div class="flex items-center">
-      <img src="/KRACK-ROBOTICS-LOGO.png" alt="Krackrobotics logo"
+        <NuxtLink to="/" class="flex items-center">
+          <img src="/KRACK-ROBOTICS-LOGO.png" alt="Krackrobotics logo"
           class="h-10 w-auto mr-4 select-none" draggable="false" />
+          <!-- <span class="text-xl font-bold text-gray-800">Krack Robotics</span> -->
+        </NuxtLink>
       </div>
       <nav class="hidden md:flex items-center space-x-6 text-lg font-semibold">
         <NuxtLink to="/" class="hover:text-[#dc2223] transition-colors">Home</NuxtLink>
@@ -39,13 +42,15 @@
     <main class="pt-20">
       <slot />
     </main>
+    <ScrollToTop />
     <footer class="bg-gray-100 text-gray-600 py-4 px-8 text-center">
-      &copy; {{ new Date().getFullYear() }} Krackrobotics. All rights reserved.
+      &copy; {{ new Date().getFullYear() }}  2023 – 2025 KRECK ROBOTICS. ALL RIGHTS RESERVED.
     </footer>
   </div>
 </template>
 
 <script setup>
+import ScrollToTop from '~/components/ScrollToTop.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 const showBg = ref(false)
 const showNav = ref(true)
