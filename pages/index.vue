@@ -141,9 +141,9 @@ onMounted(() => {
         trigger: firstSection.value,
         start: 'bottom 85%',
         endTrigger: panelSection.value,
-        end: 'center 5%',
+        end: 'center 45%',
         scrub: true,
-        // markers: true,
+        markers: true,
         onEnter: () => featureLinesVisible.value = true,
         onLeaveBack: () => featureLinesVisible.value = false,
       }
