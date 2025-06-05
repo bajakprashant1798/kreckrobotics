@@ -67,20 +67,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
-
-const movingBg = ref(null)
-const showMovingBg = ref(false)
-const firstSection = ref(null)
-const panelSection = ref(null)
-const panelImageContainer = ref(null)
-const featureLinesVisible = ref(false)
-const kreck = ref(null)
-const robotics = ref(null)
+import { useGsapInit } from '~/composables/useGsapInit'
 
 useHead({
   title: 'Home Automation | Kreckrobotics',
@@ -89,22 +79,39 @@ useHead({
   ]
 })
 
-onMounted(() => {
-  // Show background only after first section is out of view
-  window.addEventListener('scroll', () => {
-    const firstRect = firstSection.value.getBoundingClientRect()
-    showMovingBg.value = firstRect.bottom <= 0
-    // Animate gradient position
-    if (showMovingBg.value && movingBg.value) {
-      const currScroll = window.scrollY
-      const x = Math.sin(currScroll / 180) * 20
-      const y = Math.cos(currScroll / 250) * 18
-      movingBg.value.style.backgroundPosition = `${28 + x}% ${70 + y}%, ${70 - x / 2}% ${38 - y / 2}%`
-    }
-  })
+gsap.registerPlugin(ScrollTrigger)
 
-  // Animate KRECK/ROBOTICS headline out on scroll
-  gsap.to(kreck.value, {
+const firstSection = ref(null)
+const panelSection = ref(null)
+const panelImageContainer = ref(null)
+const kreck = ref(null)
+const robotics = ref(null)
+const movingBg = ref(null)
+const showMovingBg = ref(false)
+
+// --- All GSAP and animation logic ---
+useGsapInit(() => {
+  // Panel Image Animation
+  const panelTween = gsap.fromTo(
+    panelImageContainer.value,
+    { scale: 2.6, opacity: 0, y: -800 },
+    {
+      scale: 1,
+      opacity: 1,
+      y: 50,
+      ease: 'sine.out',
+      scrollTrigger: {
+        trigger: firstSection.value,
+        start: 'center center',
+        endTrigger: panelSection.value,
+        end: 'center center',
+        scrub: true,
+      }
+    }
+  )
+
+  // KRECK Animation
+  const kreckTween = gsap.to(kreck.value, {
     x: "-20vw",
     opacity: 0,
     scrollTrigger: {
@@ -112,10 +119,11 @@ onMounted(() => {
       start: "top 10%",
       end: "bottom 60%",
       scrub: 1,
-      // markers: true 
     }
   })
-  gsap.to(robotics.value, {
+
+  // ROBOTICS Animation
+  const roboticsTween = gsap.to(robotics.value, {
     x: "20vw",
     opacity: 0,
     scrollTrigger: {
@@ -123,36 +131,10 @@ onMounted(() => {
       start: "top 10%",
       end: "bottom 60%",
       scrub: 1,
-      // markers: true 
     }
   })
 
-
-  // Panel appears and animates as soon as first section is left
-  gsap.fromTo(
-    panelImageContainer.value,
-    { scale: 2.6, opacity: 0, y: -800 },
-    {
-      scale: 1,
-      opacity: 1,
-      y: 0,
-      ease: 'sine.out',
-      scrollTrigger: {
-        trigger: firstSection.value,
-        start: 'bottom 85%',
-        endTrigger: panelSection.value,
-        end: 'center 45%',
-        scrub: true,
-        // markers: true,
-        onEnter: () => featureLinesVisible.value = true,
-        onLeaveBack: () => featureLinesVisible.value = false,
-      }
-    }
-
-
-  )
-
-  // Animate feature lines and text on scroll end (fully visible)
+  // Animate feature lines and text (if you use them)
   gsap.fromTo('.animate-fade-in-up',
     { y: 40, opacity: 0 },
     {
@@ -165,8 +147,8 @@ onMounted(() => {
     }
   )
 
-  // Mouse move parallax for features and panel image
-  panelSection.value.addEventListener('mousemove', e => {
+  // --- Parallax Mouse Move (for panel image only) ---
+  function onPanelMouseMove(e) {
     const { clientX, clientY } = e
     const { width, height, left, top } = panelSection.value.getBoundingClientRect()
     const x = (clientX - left - width / 2) / width
@@ -177,20 +159,37 @@ onMounted(() => {
       duration: 0.5,
       overwrite: true
     })
-    gsap.to('.animate-fade-in-up', {
-      x: x * 12,
-      y: y * 8,
-      duration: 0.5,
-      overwrite: true
-    })
-  })
-  panelSection.value.addEventListener('mouseleave', () => {
-    gsap.to([panelImageContainer.value, '.animate-fade-in-up'], {
+  }
+  function onPanelMouseLeave() {
+    gsap.to(panelImageContainer.value, {
       x: 0, y: 0, duration: 0.6, overwrite: true
     })
-  })
+  }
+  panelSection.value.addEventListener('mousemove', onPanelMouseMove)
+  panelSection.value.addEventListener('mouseleave', onPanelMouseLeave)
+
+  // --- Optional: Smooth BG gradient position on scroll (if you want) ---
+  function onScroll() {
+    if (!movingBg.value) return
+    const currScroll = window.scrollY
+    const x = Math.sin(currScroll / 180) * 20
+    const y = Math.cos(currScroll / 250) * 18
+    movingBg.value.style.backgroundPosition = `${28 + x}% ${70 + y}%, ${70 - x / 2}% ${38 - y / 2}%`
+  }
+  window.addEventListener('scroll', onScroll)
+
+  // --- CLEANUP ---
+  return () => {
+    panelTween.kill()
+    kreckTween.kill()
+    roboticsTween.kill()
+    panelSection.value.removeEventListener('mousemove', onPanelMouseMove)
+    panelSection.value.removeEventListener('mouseleave', onPanelMouseLeave)
+    window.removeEventListener('scroll', onScroll)
+  }
 })
 </script>
+
 
 <style>
 
