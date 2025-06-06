@@ -1,65 +1,32 @@
 <template>
   <div>
-    <!-- Background Gradient -->
-    <!-- Ultra Smooth Multi-layered Gradient BG -->
-    <!-- <div
-      class="fixed inset-0 -z-10 pointer-events-none transition-all duration-700"
-      style="
-        background:
-          radial-gradient(ellipse at 25% 50%, #dc222320 28vw, transparent 80vw),
-          radial-gradient(ellipse at 70% 40%, #56565622 25vw, transparent 80vw),
-          radial-gradient(ellipse at 30% 40%, #dc22231a 28vw, transparent 90vw),
-          linear-gradient(120deg, #fff0 0%, #f8f9fa 100%);
-        opacity: 1;
-        "
-    /> -->
-
+    <!-- BG Gradient -->
     <div
       class="fixed inset-0 -z-10 pointer-events-none"
-      style="
-        background:
-          radial-gradient(ellipse 70% 50% at 55% 35%, #dc22230A 28vw, transparent 100%),
-          radial-gradient(ellipse 70% 50% at 40% 80%, #56565607 25vw, transparent 100%);
-        opacity: 1;
-      "
+      style="background:
+        radial-gradient(ellipse 70% 50% at 55% 35%, #dc22230A 28vw, transparent 100%),
+        radial-gradient(ellipse 70% 50% at 40% 80%, #56565607 25vw, transparent 100%);
+        opacity: 1;"
+      ref="movingBg"
     ></div>
 
-
-    <div ref="firstSection" class="min-h-screen flex flex-col justify-center items-center bg-white w-full px-2">
-      <div class="flex-1 flex flex-col justify-center w-full">
-        <!-- KRECK -->
-        <h1
-          ref="kreck"
-          class="block w-full kreck-font-size text-center font-extrabold font-open-sans leading-[1] tracking-tight"
-        >
-          KRECK
-        </h1>
-
+    <div ref="firstSection" class="md:min-h-screen flex flex-col md:justify-center items-center bg-white w-full px-2">
+      <div class="md:flex-1 flex flex-col md:justify-center w-full">
+        <h1 ref="kreck" class="block w-full kreck-font-size text-center font-extrabold font-open-sans leading-[1] tracking-tight">KRECK</h1>
       </div>
-      <div class="flex-1 flex flex-col justify-start w-full">
-        <h1
-          ref="robotics"
-          class="block w-full robotics-font-size text-center font-extrabold uppercase font-open-sans text-[#565656] leading-[1] tracking-tight"
-        >
-          ROBOTICS
-        </h1>
+      <div class="md:flex-1 flex flex-col justify-start w-full">
+        <h1 ref="robotics" class="block w-full robotics-font-size text-center font-extrabold uppercase font-open-sans text-[#565656] leading-[1] tracking-tight">ROBOTICS</h1>
       </div>
     </div>
 
-    <!-- Section 2: Animated Panel Product -->
-    <section
-      ref="panelSection"
-      class="secondSection relative min-h-screen flex flex-col items-center justify-center"
-    >
-      <div
-        ref="panelImageContainer"
-        class="flex flex-col items-center justify-center"
-        style="will-change: transform, opacity;"
-      >
+    <section ref="panelSection" class="secondSection relative min-h-screen flex flex-col items-center justify-center">
+      <div ref="panelImageContainer" class="flex flex-col items-center justify-center" style="will-change: transform, opacity;">
         <img
           src="/panel.png"
           alt="Panel"
           class="max-w-xs md:max-w-lg xl:max-w-lg mx-auto drop-shadow-2xl"
+          @load="panelImgLoaded = true"
+          ref="panelImg"
         />
       </div>
     </section>
@@ -67,17 +34,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGsapInit } from '~/composables/useGsapInit'
-
-useHead({
-  title: 'Home Automation | Kreckrobotics',
-  meta: [
-    { name: 'description', content: 'Discover smart home and office automation products from Kreckrobotics.' },
-  ]
-})
+import { useRoute } from 'vue-router'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -87,12 +47,32 @@ const panelImageContainer = ref(null)
 const kreck = ref(null)
 const robotics = ref(null)
 const movingBg = ref(null)
-const showMovingBg = ref(false)
+const panelImgLoaded = ref(false)
 
-// --- All GSAP and animation logic ---
-useGsapInit(() => {
-  // Panel Image Animation
-  const panelTween = gsap.fromTo(
+const panelImg = ref(null)
+
+let panelTween, kreckTween, roboticsTween
+
+const isAtTop = ref(true)
+
+function onWindowScroll() {
+  if (window.scrollY < 10 && !isAtTop.value && panelImgLoaded.value) {
+    isAtTop.value = true
+    runGsapAnimations()
+  } else if (window.scrollY >= 10) {
+    isAtTop.value = false
+  }
+}
+
+function runGsapAnimations() {
+  // Clean up previous triggers/tweens
+  ScrollTrigger.getAll().forEach(t => t.kill())
+  if (panelTween) panelTween.kill()
+  if (kreckTween) kreckTween.kill()
+  if (roboticsTween) roboticsTween.kill()
+
+  // Panel animation
+  panelTween = gsap.fromTo(
     panelImageContainer.value,
     { scale: 2.6, opacity: 0, y: -800 },
     {
@@ -109,9 +89,8 @@ useGsapInit(() => {
       }
     }
   )
-
   // KRECK Animation
-  const kreckTween = gsap.to(kreck.value, {
+  kreckTween = gsap.to(kreck.value, {
     x: "-20vw",
     opacity: 0,
     scrollTrigger: {
@@ -121,9 +100,8 @@ useGsapInit(() => {
       scrub: 1,
     }
   })
-
   // ROBOTICS Animation
-  const roboticsTween = gsap.to(robotics.value, {
+  roboticsTween = gsap.to(robotics.value, {
     x: "20vw",
     opacity: 0,
     scrollTrigger: {
@@ -134,61 +112,81 @@ useGsapInit(() => {
     }
   })
 
-  // Animate feature lines and text (if you use them)
-  gsap.fromTo('.animate-fade-in-up',
-    { y: 40, opacity: 0 },
-    {
-      y: 0, opacity: 1, duration: 0.6, stagger: 0.15,
-      scrollTrigger: {
-        trigger: panelSection.value,
-        start: "top center",
-        toggleActions: "play none none reverse"
-      }
-    }
-  )
+  ScrollTrigger.refresh()
+}
 
-  // --- Parallax Mouse Move (for panel image only) ---
-  function onPanelMouseMove(e) {
-    const { clientX, clientY } = e
-    const { width, height, left, top } = panelSection.value.getBoundingClientRect()
-    const x = (clientX - left - width / 2) / width
-    const y = (clientY - top - height / 2) / height
-    gsap.to(panelImageContainer.value, {
-      x: x * 24,
-      y: y * 16,
-      duration: 0.5,
-      overwrite: true
-    })
-  }
-  function onPanelMouseLeave() {
-    gsap.to(panelImageContainer.value, {
-      x: 0, y: 0, duration: 0.6, overwrite: true
-    })
-  }
-  panelSection.value.addEventListener('mousemove', onPanelMouseMove)
-  panelSection.value.addEventListener('mouseleave', onPanelMouseLeave)
+// --- Parallax events ---
+function onPanelMouseMove(e) {
+  if (!panelSection.value || !panelImageContainer.value) return
+  const { clientX, clientY } = e
+  const { width, height, left, top } = panelSection.value.getBoundingClientRect()
+  const x = (clientX - left - width / 2) / width
+  const y = (clientY - top - height / 2) / height
+  gsap.to(panelImageContainer.value, {
+    x: x * 24,
+    y: y * 16,
+    duration: 0.5,
+    overwrite: true
+  })
+}
+function onPanelMouseLeave() {
+  if (!panelImageContainer.value) return
+  gsap.to(panelImageContainer.value, {
+    x: 0, y: 0, duration: 0.6, overwrite: true
+  })
+}
 
-  // --- Optional: Smooth BG gradient position on scroll (if you want) ---
-  function onScroll() {
-    if (!movingBg.value) return
-    const currScroll = window.scrollY
-    const x = Math.sin(currScroll / 180) * 20
-    const y = Math.cos(currScroll / 250) * 18
-    movingBg.value.style.backgroundPosition = `${28 + x}% ${70 + y}%, ${70 - x / 2}% ${38 - y / 2}%`
-  }
-  window.addEventListener('scroll', onScroll)
+onMounted(() => {
 
-  // --- CLEANUP ---
-  return () => {
-    panelTween.kill()
-    kreckTween.kill()
-    roboticsTween.kill()
-    panelSection.value.removeEventListener('mousemove', onPanelMouseMove)
-    panelSection.value.removeEventListener('mouseleave', onPanelMouseLeave)
-    window.removeEventListener('scroll', onScroll)
+  if (panelImg.value?.complete) {
+    panelImgLoaded.value = true
+    nextTick(runGsapAnimations)
+  }
+  
+  // Parallax mousemove listeners
+  if (panelSection.value) {
+    panelSection.value.addEventListener('mousemove', onPanelMouseMove)
+    panelSection.value.addEventListener('mouseleave', onPanelMouseLeave)
+  }
+
+  // If the image is already cached, fire animation now
+  if (panelImageContainer.value?.querySelector('img')?.complete) {
+    panelImgLoaded.value = true
+    nextTick(runGsapAnimations)
+  }
+
+  window.addEventListener('scroll', onWindowScroll)
+})
+
+// Watch for when image is loaded, or on route changes (home), always rerun GSAP
+watch(panelImgLoaded, (loaded) => { if (loaded) nextTick(runGsapAnimations) })
+
+const route = useRoute()
+watch(() => route.fullPath, (val) => {
+  if (val === '/' || val === '/index') {
+    window.scrollTo({ top: 0, behavior: 'auto' })
+    setTimeout(() => {
+      if (panelImgLoaded.value) runGsapAnimations()
+    }, 180)
   }
 })
+
+onUnmounted(() => {
+  ScrollTrigger.getAll().forEach(t => t.kill())
+  if (panelSection.value) {
+    panelSection.value.removeEventListener('mousemove', onPanelMouseMove)
+    panelSection.value.removeEventListener('mouseleave', onPanelMouseLeave)
+  }
+  if (panelTween) panelTween.kill()
+  if (kreckTween) kreckTween.kill()
+  if (roboticsTween) roboticsTween.kill()
+
+  window.removeEventListener('scroll', onWindowScroll)
+})
 </script>
+
+
+<!-- Keep your styles as before -->
 
 
 <style>
