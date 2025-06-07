@@ -76,7 +76,7 @@
     </main>
     <ScrollToTop />
     <footer class="bg-gray-100 text-gray-600 py-4 px-8 text-center">
-      &copy; {{ new Date().getFullYear() }}  2023 – 2025 KRECK ROBOTICS. ALL RIGHTS RESERVED.
+      &copy; 2023 – {{ new Date().getFullYear() }} KRECK ROBOTICS. ALL RIGHTS RESERVED.
     </footer>
   </div>
 </template>

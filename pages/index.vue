@@ -82,10 +82,11 @@ function runGsapAnimations() {
       ease: 'sine.out',
       scrollTrigger: {
         trigger: firstSection.value,
-        start: 'center center',
+        start: 'center 15%',
         endTrigger: panelSection.value,
         end: 'center center',
         scrub: true,
+        markers: true,
       }
     }
   )
