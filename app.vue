@@ -18,7 +18,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 onMounted(() => {
   const lenis = new Lenis({
-    duration: 1.2,
+    duration: 2,
     smooth: true,
   })
 

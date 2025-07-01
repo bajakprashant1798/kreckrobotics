@@ -1,3 +1,10 @@
+:root {
+  --font-default: 'Open Sans', 'Poppins', Arial, sans-serif;
+  --framer-font-family: "Arboria Bold", "Arboria Bold Placeholder", sans-serif;
+  --primary-color: #dc2223; /* Primary color for links and buttons */
+  --secondary-color: #565656; /* Secondary color for text */
+}
+
 /* 1. Font smoothing for modern, premium look */
 html {
   -webkit-font-smoothing: antialiased;
@@ -9,11 +16,19 @@ html {
 *, *::before, *::after {
   box-sizing: inherit;
 }
+a {
+  /* color: var(--primary-color); */
+  /* text-decoration: none; */
+  transition: color 0.3s ease;
+}
+ul li {
+  list-style: none;
+}
 
 body {
   background: #fff;
   color: #23272b;
-  font-family: 'Open Sans', 'Poppins', Arial, sans-serif;
+  font-family: var(--framer-font-family);
   margin: 0;
   padding: 0;
 }
@@ -48,3 +63,6 @@ body {
 html, body {
   overflow-x: hidden;
 }
+
+
+
