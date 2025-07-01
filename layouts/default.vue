@@ -84,6 +84,7 @@
       <slot />
     </main>
     <ScrollToTop />
+    
     <footer class="text-gray-600 bg-[#f2f2f2] py-3 px-3 md:px-5">
       <div class="bg-[#f8f4f4] px-3 py-5 md:px-14 md:py-10 rounded-2xl shadow-md">
         <div class="md:grid md:grid-cols-6 md:gap-4 md:pb-32 mb-5 border-b-1 border-gray-300">

@@ -75,17 +75,15 @@
       <!-- Image Wipe Reveal -->
       <div ref="imageWrapper" class="w-full flex items-center justify-center h-[100vh]">
         <div class="relative w-[300px] h-[420px]">
-          <img :src="prevImage" class="absolute inset-0 w-full h-full rounded-2xl shadow-2xl z-0" />
-          <!-- <img
-            :src="nextImage"
+          <img
+            :src="baseImage"
+            class="absolute inset-0 w-full h-full rounded-2xl shadow-2xl z-0"
+          />
+          <img
+            :src="wipeImageSrc"
             ref="wipeImage"
             class="absolute inset-0 w-full h-full rounded-2xl shadow-2xl z-10"
             :style="{ clipPath: wipeClipPath }"
-          /> -->
-          <img
-            :src="nextImage"
-            ref="wipeImage"
-            class="absolute inset-0 w-full h-full rounded-2xl shadow-2xl z-10"
           />
         </div>
       </div>
@@ -147,7 +145,7 @@ const features = [
 
 // For scroll/image logic
 const wipeImage = ref(null)
-const currentIndex = ref(0)
+// const currentIndex = ref(0)
 const prevImage = ref(features[0].image)
 const nextImage = ref(features[0].image)
 
@@ -155,7 +153,7 @@ const nextImage = ref(features[0].image)
 // const oldImage = ref(null)
 // const revealing = ref(false)
 // const newImageEl = ref(null)
-const wipeClipPath = ref('inset(100% 0 0 0)')
+// const wipeClipPath = ref('inset(100% 0 0 0)')
 const lastDirection = ref(1) // 1 = down, -1 = up
 
 const featureBlocks = ref([])
@@ -171,122 +169,58 @@ const panelImg = ref(null)
 const panelImgLoaded = ref(false)
 
 
+
+
+const currentIndex = ref(0)
+const direction = ref(1)
+const baseImage = ref(features[0].image)
+const wipeImageSrc = ref(features[0].image)
+const wipeClipPath = ref('inset(100% 0 0 0)')
+
 function setupScrollWipe() {
   features.forEach((feature, i) => {
     ScrollTrigger.create({
       trigger: featureBlocks.value[i],
       start: "top center",
-      end: "+=300",
+      end: "+=500",
       scrub: true,
-      markers: {
-        startColor: "green",
-        endColor: "red",
-        fontSize: "12px",
-        indent: 20,
+      onEnter: () => {
+        direction.value = 1
+        baseImage.value = features[currentIndex.value].image
+        wipeImageSrc.value = features[i].image
+        wipeClipPath.value = 'inset(100% 0 0 0)'
+      },
+      onLeave: () => {
+        currentIndex.value = i
+        baseImage.value = features[i].image
+        wipeImageSrc.value = features[i].image
+        wipeClipPath.value = 'inset(0 0 0 0)'
+      },
+      onEnterBack: () => {
+        direction.value = -1
+        baseImage.value = features[i].image
+        wipeImageSrc.value = features[i - 1 >= 0 ? i - 1 : 0].image
+        wipeClipPath.value = 'inset(0 0 100% 0)'
+      },
+      onLeaveBack: () => {
+        currentIndex.value = i - 1 >= 0 ? i - 1 : 0
+        baseImage.value = features[currentIndex.value].image
+        wipeImageSrc.value = features[i].image
+        wipeClipPath.value = 'inset(100% 0 0 0)'
       },
       onUpdate: self => {
-        // Save direction for use in enter/leave handlers
-        lastDirection.value = self.direction
-
-        console.log("DIR:", self.direction, "PROGRESS:", self.progress.toFixed(2), "INDEX:", i)
-
-        if (self.direction === 1) { // DOWN
-          prevImage.value = features[currentIndex.value].image;
-          nextImage.value = features[i].image;
-          //// wipeClipPath.value = `inset(${100 - self.progress * 100}% 0 0 0)`;
-          // gsap.to(wipeClipPath, {
-          //   duration: 0.4,
-          //   value: `inset(${100 - self.progress * 100}% 0 0 0)`,
-          //   // ease: "power2.out"
-          // })
-          gsap.to(wipeImage.value, {
-            clipPath: `inset(${100 - self.progress * 100}% 0 0 0)`,
-            duration: 0.5,
-            ease: "power2.out"
-          })
-
-        } else { // UP
-          prevImage.value = features[i].image;
-          nextImage.value = features[currentIndex.value].image;
-          //// wipeClipPath.value = `inset(0 0 ${100 - self.progress * 100}% 0)`;
-          // gsap.to(wipeClipPath, {
-          //   duration: 0.4,
-          //   value: `inset(0 0 ${100 - self.progress * 100}% 0)`,
-          //   // ease: "power2.out",
-          // });
-          gsap.to(wipeImage.value, {
-            clipPath: `inset(0 0 ${100 - self.progress * 100}% 0)`,
-            duration: 0.5,
-            ease: "power2.out",
-            markers: true,
-          })
-
+        const progress = self.progress
+        if (direction.value === 1) {
+          wipeClipPath.value = `inset(${100 - progress * 100}% 0 0 0)`
+        } else {
+          wipeClipPath.value = `inset(0 0 ${100 - progress * 100}% 0)`
         }
-
-        // Lock images at end of transition
-        if (self.direction === 1 && self.progress > 0.99) {
-          currentIndex.value = i;
-          prevImage.value = features[i].image;
-          nextImage.value = features[i].image;
-          gsap.set(wipeImage.value, { clipPath: 'inset(0 0 0 0)' })
-        }
-        // On reverse at start, reset to previous
-        if (self.direction === -1 && self.progress < 0.01) {
-          currentIndex.value = i - 1 >= 0 ? i - 1 : 0;
-          prevImage.value = features[currentIndex.value].image;
-          nextImage.value = features[i].image;
-          // gsap.set(wipeImage.value, { clipPath: 'inset(100% 0 0 0)' })
-          gsap.set(wipeImage.value, { clipPath: 'inset(0 0 100% 0)' })
-        }
-      },
-      onEnter: () => {
-        // Always reset wipe for DOWN direction
-        prevImage.value = features[currentIndex.value].image;
-        nextImage.value = features[i].image;
-        // wipeClipPath.value = "inset(100% 0 0 0)";
-        gsap.set(wipeImage.value, { clipPath: "inset(100% 0 0 0)" });
-      },
-      // onEnterBack: () => {
-      //   // Always reset wipe for UP direction
-      //   prevImage.value = features[i].image;
-      //   nextImage.value = features[currentIndex.value].image;
-      //   // wipeClipPath.value = "inset(0 0 100% 0)";
-      //   gsap.set(wipeImage.value, { clipPath: "inset(0 0 100% 0)" });
-
-      //   // Immediately trigger a tiny wipe tween
-      //   gsap.to(wipeImage.value, {
-      //     clipPath: "inset(0 0 0% 0)",
-      //     duration: 0.3,
-      //     ease: "power2.out"
-      //   });
-      // },
-      onEnterBack: (self) => {
-        // Prepare bottom-to-top animation
-        prevImage.value = features[i].image;
-        nextImage.value = features[currentIndex.value].image;
-
-        // Immediately set starting position for wipe
-        gsap.set(wipeImage.value, { clipPath: "inset(0 0 100% 0)" });
-
-        // Delay animation slightly to allow smoother transition
-        gsap.to(wipeImage.value, {
-          clipPath: "inset(0 0 0% 0)",
-          duration: 0.6,
-          ease: "power2.inOut",
-          overwrite: true
-        });
-      },
-
-      onLeaveBack: () => {
-        currentIndex.value = i - 1 >= 0 ? i - 1 : 0;
-        prevImage.value = features[currentIndex.value].image;
-        nextImage.value = features[i].image;
-        // wipeClipPath.value = "inset(100% 0 0 0)";
-        gsap.set(wipeImage.value, { clipPath: "inset(100% 0 0 0)" });
       }
     })
   })
 }
+
+
 
 
 
@@ -382,12 +316,12 @@ function setupFeatureAnimations() {
     pinSpacing: true,
     scrub: false,
     // markers: true,
-    markers: {
-      startColor: "blue",
-      endColor: "purple",
-      fontSize: "12px",
-      indent: 20,
-    },
+    // markers: {
+    //   startColor: "blue",
+    //   endColor: "purple",
+    //   fontSize: "12px",
+    //   indent: 20,
+    // },
   })
 
   featureBlocks.value.forEach((el, index) => {
@@ -401,12 +335,12 @@ function setupFeatureAnimations() {
         end: "bottom top",
         scrub: true,
 
-        markers: {
-          startColor: "orange",
-          endColor: "pink",
-          fontSize: "12px",
-          indent: 20,
-        },
+        // markers: {
+        //   startColor: "orange",
+        //   endColor: "pink",
+        //   fontSize: "12px",
+        //   indent: 20,
+        // },
       }
     })
 
