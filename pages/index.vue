@@ -21,42 +21,22 @@
     </div>
 
     <!-- PANEL SECTION -->
-    <section ref="panelSection" class="secondSection relative min-h-screen flex flex-col items-center justify-center">
-      <div ref="panelImageContainer" class="flex flex-col items-center justify-center" style="will-change: transform, opacity;">
-        <img
-          src="/panel.png"
-          alt="Panel"
-          class="max-w-xs md:max-w-lg xl:max-w-lg mx-auto drop-shadow-2xl"
-          @load="panelImgLoaded = true"
-          ref="panelImg"
-        />
-      </div>
+    <section ref="panelSection" class="secondSection container-p relative min-h-screen flex flex-col items-center justify-center">
+      <!-- <div class="flex flex-col items-center justify-center"> -->
+        <h2 ref="fancyHeading" class="text-4xl font-bold font-[#565656] fancy-heading">Touch Panel</h2>
+        <div ref="panelImageContainer" class="flex flex-col items-center justify-center" style="will-change: transform, opacity;">
+          <img
+            src="/panel.png"
+            alt="Panel"
+            class="max-w-xs md:max-w-3xl mx-auto drop-shadow-2xl"
+            @load="panelImgLoaded = true"
+            ref="panelImg"
+          />
+        </div>
+        <p ref="fancyPara" class="mt-24 fancy-para">Manufacturer of Touch Switch & Home Automation</p>
+      <!-- </div> -->
     </section>
 
-    <!-- FEATURES SECTION (Scroll animation) -->
-    <!-- <section class="height-[300vh] w-full relative p-12 bg-amber-300">
-      <div class="grid grid-cols-2 gap-4">
-        <div class="">
-          <div>
-            <h2 class="text-4xl md:text-6xl font-bold  mb-8">Our Products 1</h2>
-            <p class="text-xl md:text-2xl  mb-12">Explore our innovative solutions designed to enhance your life.</p>
-          </div>
-          <div>
-            <h2 class="text-4xl md:text-6xl font-bold  mb-8">Our Products 2</h2>
-            <p class="text-xl md:text-2xl  mb-12">Explore our innovative solutions designed to enhance your life.</p>
-          </div>
-          <div>
-            <h2 class="text-4xl md:text-6xl font-bold  mb-8">Our Products 3</h2>
-            <p class="text-xl md:text-2xl  mb-12">Explore our innovative solutions designed to enhance your life.</p>
-          </div>
-        </div>
-        <div class="w-full flex items-center justify-center">
-          <div class="w-1/2">
-            <img src="/panel.png" alt="panel" class="w-[300px] md:w-[420px] rounded-2xl shadow-2xl" />
-          </div>
-        </div>
-      </div>
-    </section> -->
     <!-- Features Section (Pinned Image with Text Scroll) -->
     <section ref="featuresContainer" :style="`height: ${(features.length * 75)}vh;`">
     <div class="grid grid-cols-2 max-w-screen-xl mx-auto px-8">
@@ -167,6 +147,8 @@ const kreck = ref(null)
 const robotics = ref(null)
 const panelImg = ref(null)
 const panelImgLoaded = ref(false)
+const fancyHeading = ref(null)
+const fancyPara = ref(null)
 
 
 
@@ -237,17 +219,24 @@ function getColorForIndex(index) {
 
 
 // SECTION 1 & 2 ANIMATIONS
+// panel animaiton
 function runHeroPanelGsapAnimations() {
   ScrollTrigger.getAll().forEach(t => t.kill())
   if (panelTween) panelTween.kill()
   if (kreckTween) kreckTween.kill()
   if (roboticsTween) roboticsTween.kill()
 
-  // Panel image animation
+  // Animate panel image: perspective tilt to flat
   panelTween = gsap.fromTo(
     panelImageContainer.value,
-    { scale: 2.6, opacity: 0, y: -800 },
     {
+      rotateY: -30,  // start tilted (could use rotateX for forward/back)
+      scale: 2.6,
+      opacity: 0,
+      y: -800,
+    },
+    {
+      rotateY: 0,    // flat
       scale: 1,
       opacity: 1,
       y: 50,
@@ -261,6 +250,7 @@ function runHeroPanelGsapAnimations() {
       }
     }
   )
+
   kreckTween = gsap.to(kreck.value, {
     x: "-20vw",
     opacity: 0,
@@ -283,25 +273,24 @@ function runHeroPanelGsapAnimations() {
   })
 }
 
+
 // PANEL PARALLAX
 function onPanelMouseMove(e) {
-  if (!panelSection.value || !panelImageContainer.value) return
-  const { clientX, clientY } = e
+  if (disablePanelParallax) return
   const { width, height, left, top } = panelSection.value.getBoundingClientRect()
-  const x = (clientX - left - width / 2) / width
-  const y = (clientY - top - height / 2) / height
-  gsap.to(panelImageContainer.value, {
-    x: x * 24,
-    y: y * 16,
-    duration: 0.5,
-    overwrite: true
-  })
+  const x = (e.clientX - left - width / 2) / width
+  const y = (e.clientY - top - height / 2) / height
+  mouseX = x * 24
+  mouseY = y * 16
+  panelXSetter(mouseX)
+  panelYSetter(mouseY)
 }
 function onPanelMouseLeave() {
-  if (!panelImageContainer.value) return
-  gsap.to(panelImageContainer.value, {
-    x: 0, y: 0, duration: 0.6, overwrite: true
-  })
+  if (disablePanelParallax) return
+  mouseX = 0
+  mouseY = 0
+  panelXSetter(mouseX)
+  panelYSetter(mouseY)
 }
 
 // GSAP scroll logic
@@ -391,19 +380,87 @@ function setupHorizontalScroll() {
 
 
 
+let mouseX = 0, mouseY = 0
+let panelXSetter, panelYSetter, panelRotateYSetter
+
+
+// 1. Split Heading into Spans, Animate Vertically Per Letter
+function setupFancyHeadingAnimation() {
+  const headingEl = fancyHeading.value;
+  if (!headingEl) return;
+  const text = headingEl.textContent.trim();
+
+  // Split each character into a span, but don't add <br>!
+  headingEl.innerHTML = '';
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const span = document.createElement('span');
+    span.className = 'fancy-heading-letter';
+    // Preserve spaces
+    span.innerHTML = char === ' ' ? '&nbsp;' : char;
+    headingEl.appendChild(span);
+  }
+
+  // Animate each letter up and fade in, staggered
+  const letters = headingEl.querySelectorAll('.fancy-heading-letter');
+  gsap.set(letters, { opacity: 0, y: 32 });
+  gsap.to(letters, {
+    opacity: 1,
+    y: 0,
+    stagger: 0.09,
+    ease: 'power3.out',
+    duration: 0.55,
+    scrollTrigger: {
+      trigger: headingEl,
+      start: "top 85%",
+      once: true,
+    }
+  });
+}
+
+
+
+// 2. Animate Paragraph (Word, Line, or Sentence Reveal)
+function setupFancyParaAnimation() {
+  const paraEl = fancyPara.value;
+  if (!paraEl) return;
+
+  // Split para by space to each word (or by sentence/line if you want)
+  paraEl.innerHTML = paraEl.textContent
+    .split(' ')
+    .map(word => `<span class="fancy-para-word">${word}</span>`)
+    .join(' ');
+
+  const words = paraEl.querySelectorAll('.fancy-para-word');
+  gsap.set(words, { opacity: 0, y: 24 });
+  gsap.to(words, {
+    opacity: 1,
+    y: 0,
+    stagger: 0.04,
+    ease: "power2.out",
+    duration: 0.45,
+    scrollTrigger: {
+      trigger: paraEl,
+      start: "top 90%",
+      once: true,
+    }
+  });
+}
+
+
 onMounted(() => {
-  if (panelImg.value?.complete) {
-    panelImgLoaded.value = true
-    runHeroPanelGsapAnimations()
-  }
-  if (panelSection.value) {
-    panelSection.value.addEventListener('mousemove', onPanelMouseMove)
-    panelSection.value.addEventListener('mouseleave', onPanelMouseLeave)
-  }
-  if (panelImageContainer.value?.querySelector('img')?.complete) {
-    panelImgLoaded.value = true
-    runHeroPanelGsapAnimations()
-  }
+  // if (panelImg.value?.complete) {
+  //   panelImgLoaded.value = true
+  //   runHeroPanelGsapAnimations()
+  // }
+  // if (panelSection.value) {
+  //   panelSection.value.addEventListener('mousemove', onPanelMouseMove)
+  //   panelSection.value.addEventListener('mouseleave', onPanelMouseLeave)
+  // }
+  // if (panelImageContainer.value?.querySelector('img')?.complete) {
+  //   panelImgLoaded.value = true
+  //   runHeroPanelGsapAnimations()
+  // }
   // ScrollTrigger.defaults({ markers: true, scroller: window })
   ScrollTrigger.refresh()
 
@@ -412,15 +469,25 @@ onMounted(() => {
     setupFeatureAnimations()
     setupScrollWipe()
     setupHorizontalScroll()
+    setupFancyHeadingAnimation()
+    setupFancyParaAnimation()
     ScrollTrigger.refresh()
   })
+
+  // Set up quick setters for only X and Y
+  panelXSetter = gsap.quickSetter(panelImageContainer.value, 'x', 'px')
+  panelYSetter = gsap.quickSetter(panelImageContainer.value, 'y', 'px')
+
+  panelSection.value.addEventListener('mousemove', onPanelMouseMove)
+  panelSection.value.addEventListener('mouseleave', onPanelMouseLeave)
 })
 
 onUnmounted(() => {
+  if (panelTween) panelTween.kill()
   ScrollTrigger.getAll().forEach(t => t.kill())
   if (panelSection.value) {
-    panelSection.value.removeEventListener('mousemove', onPanelMouseMove)
-    panelSection.value.removeEventListener('mouseleave', onPanelMouseLeave)
+    panelSection.value?.removeEventListener('mousemove', onPanelMouseMove)
+    panelSection.value?.removeEventListener('mouseleave', onPanelMouseLeave)
   }
   if (panelTween) panelTween.kill()
   if (kreckTween) kreckTween.kill()
@@ -497,4 +564,22 @@ onUnmounted(() => {
 }
 
 /* horizontal scroll css ends */
+
+/* heading and para panel section animaiton */
+.fancy-heading {
+  text-align: center;
+}
+.fancy-heading-letter {
+  display: inline-block;
+  font-size: inherit;
+  line-height: 1.1;
+  /* optional: margin-right: 0.02em; */
+}
+
+.fancy-para-word {
+  display: inline-block;
+  margin-right: 0.22em;
+}
+
+
 </style>
