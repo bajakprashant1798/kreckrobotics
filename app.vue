@@ -8,7 +8,7 @@
 </template>
 
 
-<script setup>
+<!-- <script setup>
 import { onMounted } from 'vue'
 import Lenis from '@studio-freight/lenis'
 import { gsap } from 'gsap'
@@ -55,4 +55,4 @@ onMounted(() => {
   })
   ScrollTrigger.refresh()
 })
-</script>
+</script> -->

@@ -40,7 +40,6 @@
     <!-- Features Section (Pinned Image with Text Scroll) -->
     <section ref="featuresContainer" :style="`height: ${(features.length * 75)}vh;`">
     <div class="grid grid-cols-2 max-w-screen-xl mx-auto px-8">
-      <!-- Text Blocks -->
       <div>
         <div
           v-for="(feature, i) in features"
@@ -52,8 +51,10 @@
           <p>{{ feature.text }}</p>
         </div>
       </div>
+      
       <!-- Image Wipe Reveal -->
-      <div ref="imageWrapper" class="w-full flex items-center justify-center h-[100vh]">
+
+      <!-- <div ref="imageWrapper" class="w-full flex items-center justify-center h-[100vh]">
         <div class="relative w-[300px] h-[420px]">
           <img
             :src="baseImage"
@@ -66,7 +67,25 @@
             :style="{ clipPath: wipeClipPath }"
           />
         </div>
+      </div> -->
+
+      <div class="image-pin-wrap">
+        <div ref="imageWrapper" class="w-full flex items-center justify-center h-[100vh]" style="will-change: transform;">
+          <div class="relative w-[300px] h-[420px]">
+            <img
+              :src="baseImage"
+              class="absolute inset-0 w-full h-full rounded-2xl shadow-2xl z-0"
+            />
+            <img
+              :src="wipeImageSrc"
+              ref="wipeImage"
+              class="absolute inset-0 w-full h-full rounded-2xl shadow-2xl z-10"
+              :style="{ clipPath: wipeClipPath }"
+            />
+          </div>
+        </div>
       </div>
+
     </div>
   </section>
 
@@ -98,10 +117,6 @@ import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { tr } from '@nuxt/ui/runtime/locale/index.js'
-// import { useRoute } from 'vue-router'
-// import { computed } from 'vue'
-
-// const showPreviousImage = computed(() => previousImage.value && previousImage.value !== currentImage.value)
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -125,16 +140,7 @@ const features = [
 
 // For scroll/image logic
 const wipeImage = ref(null)
-// const currentIndex = ref(0)
-const prevImage = ref(features[0].image)
-const nextImage = ref(features[0].image)
 
-// const currentImage = ref(features[0].image)
-// const oldImage = ref(null)
-// const revealing = ref(false)
-// const newImageEl = ref(null)
-// const wipeClipPath = ref('inset(100% 0 0 0)')
-const lastDirection = ref(1) // 1 = down, -1 = up
 
 const featureBlocks = ref([])
 const featuresContainer = ref(null)
@@ -192,11 +198,28 @@ function setupScrollWipe() {
       },
       onUpdate: self => {
         const progress = self.progress
+        // if (direction.value === 1) {
+        //   wipeClipPath.value = `inset(${100 - progress * 100}% 0 0 0)`
+        // } else {
+        //   wipeClipPath.value = `inset(0 0 ${100 - progress * 100}% 0)`
+        // }
+
         if (direction.value === 1) {
-          wipeClipPath.value = `inset(${100 - progress * 100}% 0 0 0)`
+          gsap.to(wipeImage.value, {
+            clipPath: `inset(${100 - progress * 100}% 0 0 0)`,
+            overwrite: 'auto',
+            duration: 0.05, // slightly delays to smooth
+            ease: 'none'
+          })
         } else {
-          wipeClipPath.value = `inset(0 0 ${100 - progress * 100}% 0)`
+          gsap.to(wipeImage.value, {
+            clipPath: `inset(0 0 ${100 - progress * 100}% 0)`,
+            overwrite: 'auto',
+            duration: 0.05,
+            ease: 'none'
+          })
         }
+
       }
     })
   })
@@ -234,12 +257,16 @@ function runHeroPanelGsapAnimations() {
       scale: 2.6,
       opacity: 0,
       y: -800,
+      force3D: true,
+      transformPerspective: 1000,
     },
     {
       rotateY: 0,    // flat
       scale: 1,
       opacity: 1,
       y: 50,
+      force3D: true,
+      transformPerspective: 1000,
       ease: 'sine.out',
       scrollTrigger: {
         trigger: firstSection.value,
@@ -247,6 +274,7 @@ function runHeroPanelGsapAnimations() {
         endTrigger: panelSection.value,
         end: 'center center',
         scrub: true,
+        markers: true,
       }
     }
   )
@@ -259,6 +287,7 @@ function runHeroPanelGsapAnimations() {
       start: "top 10%",
       end: "bottom 60%",
       scrub: 1,
+      markers: true,
     }
   })
   roboticsTween = gsap.to(robotics.value, {
@@ -269,29 +298,11 @@ function runHeroPanelGsapAnimations() {
       start: "top 10%",
       end: "bottom 60%",
       scrub: 1,
+      markers: true,
     }
   })
 }
 
-
-// PANEL PARALLAX
-function onPanelMouseMove(e) {
-  if (disablePanelParallax) return
-  const { width, height, left, top } = panelSection.value.getBoundingClientRect()
-  const x = (e.clientX - left - width / 2) / width
-  const y = (e.clientY - top - height / 2) / height
-  mouseX = x * 24
-  mouseY = y * 16
-  panelXSetter(mouseX)
-  panelYSetter(mouseY)
-}
-function onPanelMouseLeave() {
-  if (disablePanelParallax) return
-  mouseX = 0
-  mouseY = 0
-  panelXSetter(mouseX)
-  panelYSetter(mouseY)
-}
 
 // GSAP scroll logic
 function setupFeatureAnimations() {
@@ -304,7 +315,7 @@ function setupFeatureAnimations() {
     pin: imageWrapper.value,
     pinSpacing: true,
     scrub: false,
-    // markers: true,
+    markers: true,
     // markers: {
     //   startColor: "blue",
     //   endColor: "purple",
@@ -333,14 +344,7 @@ function setupFeatureAnimations() {
       }
     })
 
-    // Image swap (reveal) on center
-    // ScrollTrigger.create({
-    //   trigger: el,
-    //   start: "top center",
-    //   end: "bottom center",
-    //   onEnter: () => revealNewImage(index),
-    //   onEnterBack: () => revealNewImage(index),
-    // })
+
 
     // Optionally: change background
     ScrollTrigger.create({
@@ -449,20 +453,9 @@ function setupFancyParaAnimation() {
 
 
 onMounted(() => {
-  // if (panelImg.value?.complete) {
-  //   panelImgLoaded.value = true
-  //   runHeroPanelGsapAnimations()
-  // }
-  // if (panelSection.value) {
-  //   panelSection.value.addEventListener('mousemove', onPanelMouseMove)
-  //   panelSection.value.addEventListener('mouseleave', onPanelMouseLeave)
-  // }
-  // if (panelImageContainer.value?.querySelector('img')?.complete) {
-  //   panelImgLoaded.value = true
-  //   runHeroPanelGsapAnimations()
-  // }
+  
   // ScrollTrigger.defaults({ markers: true, scroller: window })
-  ScrollTrigger.refresh()
+  // ScrollTrigger.refresh()
 
   nextTick(() => {
     runHeroPanelGsapAnimations()
@@ -478,17 +471,13 @@ onMounted(() => {
   panelXSetter = gsap.quickSetter(panelImageContainer.value, 'x', 'px')
   panelYSetter = gsap.quickSetter(panelImageContainer.value, 'y', 'px')
 
-  panelSection.value.addEventListener('mousemove', onPanelMouseMove)
-  panelSection.value.addEventListener('mouseleave', onPanelMouseLeave)
+  
 })
 
 onUnmounted(() => {
   if (panelTween) panelTween.kill()
   ScrollTrigger.getAll().forEach(t => t.kill())
-  if (panelSection.value) {
-    panelSection.value?.removeEventListener('mousemove', onPanelMouseMove)
-    panelSection.value?.removeEventListener('mouseleave', onPanelMouseLeave)
-  }
+  
   if (panelTween) panelTween.kill()
   if (kreckTween) kreckTween.kill()
   if (roboticsTween) roboticsTween.kill()
@@ -568,11 +557,15 @@ onUnmounted(() => {
 /* heading and para panel section animaiton */
 .fancy-heading {
   text-align: center;
+  white-space: nowrap; /* Prevent line breaks */
 }
 .fancy-heading-letter {
   display: inline-block;
   font-size: inherit;
   line-height: 1.1;
+  vertical-align: baseline;
+  transform: translateZ(0); /* GPU boost for Chrome */
+  backface-visibility: hidden;
   /* optional: margin-right: 0.02em; */
 }
 
@@ -581,5 +574,10 @@ onUnmounted(() => {
   margin-right: 0.22em;
 }
 
+.image-pin-wrap {
+  /* This div is not flex or grid! */
+  position: relative;
+  height: 100vh;
+}
 
 </style>
