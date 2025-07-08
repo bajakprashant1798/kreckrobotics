@@ -79,9 +79,9 @@
   <!-- HORIZONTAL SCROLL SECTION -->
   <section ref="horizontalSection" class="horizontal-scroll-wrapper">
     <div ref="horizontalContent" class="horizontal-scroll-inner">
-      <div class="horizontal-panel">Slide 1</div>
-      <div class="horizontal-panel">Slide 2</div>
-      <div class="horizontal-panel">Slide 3</div>
+      <div class="horizontal-panel">Automation As An Investment</div>
+      <div class="horizontal-panel">Mobile Application</div>
+      <div class="horizontal-panel">Mobile Application</div>
     </div>
   </section>
 

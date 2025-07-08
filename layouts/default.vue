@@ -84,7 +84,7 @@
       <slot />
     </main>
     <ScrollToTop />
-    
+
     <footer class="text-gray-600 bg-[#f2f2f2] py-3 px-3 md:px-5">
       <div class="bg-[#f8f4f4] px-3 py-5 md:px-14 md:py-10 rounded-2xl shadow-md">
         <div class="md:grid md:grid-cols-6 md:gap-4 md:pb-32 mb-5 border-b-1 border-gray-300">
@@ -160,10 +160,10 @@
             <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
             <ul class="space-y-2">
               <li class="mb-2">
-                <div class=" flex items-center"><spam class="mr-2 bg-[#565656] shadow-md rounded-full p-2"><Icon name="mdi:email" class="text-xl text-white block" /></spam> <p class="text-gray-600"><NuxtLink to="mailto:email@gmail.com" class="hover:text-[#dc2223] transition-colors">email@gamil.com</NuxtLink></p></div>
+                <div class=" flex items-center"><spam class="mr-2 bg-[#565656] shadow-md rounded-full p-2"><Icon name="mdi:email" class="text-xl text-white block" /></spam> <p class="text-gray-600"><NuxtLink to="mailto:info@kreckrobotics.com" class="hover:text-[#dc2223] transition-colors">info@kreckrobotics.com</NuxtLink></p></div>
               </li>
               <li class="mb-2">
-                <div class=" flex items-center"><spam class="mr-2 bg-[#565656] shadow-md rounded-full p-2"><Icon name="mdi:phone" class="text-xl text-white block" /></spam> <p class="text-gray-600"><NuxtLink to="tel:+1234567890" class="hover:text-[#dc2223] transition-colors">+1234567890</NuxtLink></p></div>
+                <div class=" flex items-center"><spam class="mr-2 bg-[#565656] shadow-md rounded-full p-2"><Icon name="mdi:phone" class="text-xl text-white block" /></spam> <p class="text-gray-600"><NuxtLink to="tel:75187 57518" class="hover:text-[#dc2223] transition-colors">+91 75187 57518</NuxtLink></p></div>
               </li>
               <li class="mb-2">
                 <div class=" flex items-center"><spam class="mr-2 bg-[#565656] shadow-md rounded-full p-2 inline-block"><Icon name="mdi:map-marker" class="text-xl text-white block" /></spam> <p class="text-gray-600">1234 Street Name, City, State, 12345</p></div>
