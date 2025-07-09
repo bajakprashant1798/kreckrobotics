@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "slug": "wireless-lamp",
+    "name": "Wireless Lamp",
+    "description": "A smart wireless lamp with dimmable light.",
+    "image": "/images/products/panel.png"
+  },
+  {
+    "id": 2,
+    "slug": "bluetooth-speaker",
+    "name": "Bluetooth Speaker",
+    "description": "Portable speaker with powerful sound.",
+    "image": "/images/products/panel2.jpg"
+  },
+  {
+    "id": 2,
+    "slug": "bluetooth-speaker2",
+    "name": "Bluetooth Speaker2",
+    "description": "Portable speaker with powerful sound.2",
+    "image": "/images/products/panel1.png"
+  }
+]
