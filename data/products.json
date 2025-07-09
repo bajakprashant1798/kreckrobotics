@@ -14,7 +14,14 @@
     "image": "/images/products/panel2.jpg"
   },
   {
-    "id": 2,
+    "id": 3,
+    "slug": "bluetooth-speaker2",
+    "name": "Bluetooth Speaker2",
+    "description": "Portable speaker with powerful sound.2",
+    "image": "/images/products/panel1.png"
+  },
+  {
+    "id": 4,
     "slug": "bluetooth-speaker2",
     "name": "Bluetooth Speaker2",
     "description": "Portable speaker with powerful sound.2",

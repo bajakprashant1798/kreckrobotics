@@ -274,7 +274,7 @@ function runHeroPanelGsapAnimations() {
         endTrigger: panelSection.value,
         end: 'center center',
         scrub: true,
-        markers: true,
+        // markers: true,
       }
     }
   )
@@ -287,7 +287,7 @@ function runHeroPanelGsapAnimations() {
       start: "top 10%",
       end: "bottom 60%",
       scrub: 1,
-      markers: true,
+      // markers: true,
     }
   })
   roboticsTween = gsap.to(robotics.value, {
@@ -298,7 +298,7 @@ function runHeroPanelGsapAnimations() {
       start: "top 10%",
       end: "bottom 60%",
       scrub: 1,
-      markers: true,
+      // markers: true,
     }
   })
 }
@@ -315,7 +315,7 @@ function setupFeatureAnimations() {
     pin: imageWrapper.value,
     pinSpacing: true,
     scrub: false,
-    markers: true,
+    // markers: true,
     // markers: {
     //   startColor: "blue",
     //   endColor: "purple",
