@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Page with Zoom & Angles</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="logo">
+      <img src="images/logo.png" alt="Company Logo">
+    </div>
+    <div class="back-button">
+      <a href="product_card.html" class="back-link">← Back to Products</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="left-column">
+
+      <!-- Main Image with Zoom and Lens -->
+      <div class="main-image-wrapper">
+        <div class="img-container">
+          <img src="images/black_golden_1.png" alt="Product Image" id="main-image" class="zoom-image">
+          <div id="lens" class="lens"></div> <!-- Lens box -->
+          <div id="zoom-result" class="zoom-result"></div> <!-- Enlarged preview -->
+        </div>
+      </div>
+
+      <!-- Thumbnails -->
+      <div class="thumbnail-row" id="thumbnail-row">
+        <img src="images/black_golden_1.png" class="thumb active" data-angle="1">
+        <img src="images/black_golden_2.png" class="thumb" data-angle="2">
+        <img src="images/black_golden_3.png" class="thumb" data-angle="3">
+      </div>
+    </div>
+
+    <div class="right-column">
+      <div class="product-description">
+        <h1>Wireless Lamp</h1>
+        <p>A smart wireless lamp with dimmable light.</p>
+      </div>
+
+      <div class="product-configuration">
+
+        <!-- Board Color -->
+        <div class="product-color">
+          <span>Board Colour</span>
+          <div class="color-choose">
+            <div>
+              <input type="radio" id="black" name="board-color" data-color="black" checked>
+              <label for="black"><span class="color-circle black"></span></label>
+            </div>
+            <div>
+              <input type="radio" id="white" name="board-color" data-color="white">
+              <label for="white"><span class="color-circle white"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Frame Color -->
+        <div class="frame-color">
+          <span>Frame Colour</span>
+          <div class="color-choose">
+            <div>
+              <input type="radio" id="golden" name="frame-color" data-color="golden" checked>
+              <label for="golden"><span class="color-circle golden"></span></label>
+            </div>
+            <div>
+              <input type="radio" id="silver" name="frame-color" data-color="silver">
+              <label for="silver"><span class="color-circle silver"></span></label>
+            </div>
+            <div>
+              <input type="radio" id="grey" name="frame-color" data-color="grey">
+              <label for="grey"><span class="color-circle grey"></span></label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- JS Script -->
+  <script src="script.js"></script>
+</body>
+</html>

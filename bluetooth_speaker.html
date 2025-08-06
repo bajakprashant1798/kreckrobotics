@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Page with Zoom & Angles</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="logo">
+      <img src="images/logo.png" alt="Company Logo">
+    </div>
+    <div class="back-button">
+      <a href="product_card.html" class="back-link">← Back to Products</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="left-column">
+
+      <!-- Main Image with Zoom and Lens -->
+      <div class="main-image-wrapper">
+        <div class="img-container">
+          <img src="images/bluetooth_speaker.png" alt="Product Image" id="main-image" class="zoom-image">
+          <div id="lens" class="lens"></div> <!-- Lens box -->
+          <div id="zoom-result" class="zoom-result"></div> <!-- Enlarged preview -->
+        </div>
+      </div>
+
+      <!-- Thumbnails -->
+      <div class="thumbnail-row" id="thumbnail-row">
+        <img src="images/bluetooth_speaker.png" class="thumb active" data-angle="1">
+        <img src="images/bluetooth_speaker_1.png" class="thumb" data-angle="2">
+        <img src="images/bluetooth_speaker_3.png" class="thumb" data-angle="3">
+      </div>
+    </div>
+
+    <div class="right-column">
+      <div class="product-description">
+        <h1>Bluetooth Speaker</h1>
+        <p>Portable speaker with powerful sound.</p>
+      </div>
+
+      <div class="product-configuration">
+      </div>
+    </div>
+  </main>
+
+  <!-- JS Script -->
+  <script src="script.js"></script>
+</body>
+</html>
