@@ -21,7 +21,7 @@
     </div>
 
     <!-- PANEL SECTION -->
-    <section ref="panelSection" class="secondSection container-p relative min-h-screen flex flex-col items-center justify-center">
+    <section ref="panelSection" class="relative secondSection py-12 px-8 lg:p-24 md:min-h-screen flex flex-col items-center justify-center">
       <!-- <div class="flex flex-col items-center justify-center"> -->
         <h2 ref="fancyHeading" class="text-4xl font-bold font-[#565656] fancy-heading">Touch Panel</h2>
         <div ref="panelImageContainer" class="flex flex-col items-center justify-center" style="will-change: transform, opacity;">
@@ -39,55 +39,36 @@
 
     <!-- Features Section (Pinned Image with Text Scroll) -->
     <section ref="featuresContainer" :style="`height: ${(features.length * 75)}vh;`">
-    <div class="grid grid-cols-2 max-w-screen-xl mx-auto px-8">
-      <div>
-        <div
-          v-for="(feature, i) in features"
-          :key="i"
-          :ref="el => featureBlocks[i] = el"
-          class="product-text-block"
-        >
-          <h2>{{ feature.title }}</h2>
-          <p>{{ feature.text }}</p>
-        </div>
-      </div>
-      
-      <!-- Image Wipe Reveal -->
-
-      <!-- <div ref="imageWrapper" class="w-full flex items-center justify-center h-[100vh]">
-        <div class="relative w-[300px] h-[420px]">
-          <img
-            :src="baseImage"
-            class="absolute inset-0 w-full h-full rounded-2xl shadow-2xl z-0"
-          />
-          <img
-            :src="wipeImageSrc"
-            ref="wipeImage"
-            class="absolute inset-0 w-full h-full rounded-2xl shadow-2xl z-10"
-            :style="{ clipPath: wipeClipPath }"
-          />
-        </div>
-      </div> -->
-
-      <div class="image-pin-wrap">
-        <div ref="imageWrapper" class="w-full flex items-center justify-center h-[100vh]" style="will-change: transform;">
-          <div class="relative w-[300px] h-[420px]">
-            <img
-              :src="baseImage"
-              class="absolute inset-0 w-full h-full rounded-2xl shadow-2xl z-0"
-            />
-            <img
-              :src="wipeImageSrc"
-              ref="wipeImage"
-              class="absolute inset-0 w-full h-full rounded-2xl shadow-2xl z-10"
-              :style="{ clipPath: wipeClipPath }"
-            />
+      <div class="grid grid-cols-2 max-w-screen-xl mx-auto px-8">
+        <div>
+          <div
+            v-for="(feature, i) in features"
+            :key="i"
+            :ref="el => featureBlocks[i] = el"
+            class="product-text-block"
+          >
+            <h2>{{ feature.title }}</h2>
+            <p>{{ feature.text }}</p>
           </div>
         </div>
-      </div>
 
-    </div>
-  </section>
+        <div class="image-pin-wrap">
+          <div ref="imageWrapper" class="w-full flex items-center justify-center h-[100vh]" style="will-change: transform;">
+            <div class="crossfade-stage">
+              <img
+                v-for="(f, i) in features"
+                :key="i"
+                :src="f.image"
+                :ref="el => { if (el) imageEls[i] = el }"
+                class="crossfade-img rounded-2xl shadow-2xl"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
 
     
   <!-- VERTICAL Section (Bridge) -->
@@ -96,13 +77,42 @@
   </section> -->
 
   <!-- HORIZONTAL SCROLL SECTION -->
+  <!-- HORIZONTAL SCROLL SECTION -->
   <section ref="horizontalSection" class="horizontal-scroll-wrapper">
     <div ref="horizontalContent" class="horizontal-scroll-inner">
-      <div class="horizontal-panel">Automation As An Investment</div>
-      <div class="horizontal-panel">Mobile Application</div>
-      <div class="horizontal-panel">Mobile Application</div>
+      <!-- Panels -->
+      <div
+        v-for="(p, i) in hPanels"
+        :key="i"
+        class="horizontal-panel px-12 py-52 lg:px-24 lg:py-24"
+        :ref="el => panelEls[i] = el"
+      >
+        <div class="mx-auto w-full max-w-[1400px] h-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center px-6">
+          <!-- Left: image -->
+          <div class="flex items-center justify-center">
+            <img :src="p.image" :alt="p.alt" class="max-h-[420px] md:max-h-[420px] lg:max-h-[520px] w-auto object-contain" />
+          </div>
+
+          <!-- Right: bullets -->
+          <div class="space-y-6" :ref="el => textGroupEls[i] = el">
+            <div
+              v-for="(b, j) in p.bullets"
+              :key="j"
+              class="flex items-start gap-4 opacity-0 translate-y-6"
+            >
+              <span class="mt-2 h-3 w-3 rounded-full bg-[#dc2223] shrink-0"></span>
+              <div>
+                <h3 class="text-lg font-bold text-[#dc2223] leading-tight">{{ b.title }}</h3>
+                <p class="text-[15px] text-[#565656] leading-snug">{{ b.text }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Panels -->
     </div>
   </section>
+
 
   <!-- FINAL VERTICAL SECTION -->
   <section class="min-h-screen flex items-center justify-center bg-gray-100">
@@ -138,10 +148,6 @@ const features = [
   }
 ]
 
-// For scroll/image logic
-const wipeImage = ref(null)
-
-
 const featureBlocks = ref([])
 const featuresContainer = ref(null)
 const imageWrapper = ref(null)
@@ -156,71 +162,49 @@ const panelImgLoaded = ref(false)
 const fancyHeading = ref(null)
 const fancyPara = ref(null)
 
+// Crossfade logic
+const imageEls = ref(new Array(features.length).fill(null))  // properly initialized array
+const activeIndex = ref(0)       // which image is currently visible
+const reducedMotion = ref(false) // will be set in onMounted to avoid SSR issues
 
+function preloadFeatureImages() {
+  return Promise.all(features.map(f => {
+    return new Promise(resolve => {
+      const img = new Image()
+      img.onload = resolve
+      img.onerror = resolve
+      img.src = f.image
+    })
+  }))
+}
 
+function fadeTo(nextIndex) {
+  if (nextIndex === activeIndex.value) return
+  const prevEl = imageEls.value[activeIndex.value]
+  const nextEl = imageEls.value[nextIndex]
+  if (!nextEl) return
 
-const currentIndex = ref(0)
-const direction = ref(1)
-const baseImage = ref(features[0].image)
-const wipeImageSrc = ref(features[0].image)
-const wipeClipPath = ref('inset(100% 0 0 0)')
+  const dur = reducedMotion.value ? 0.01 : 0.5
 
-function setupScrollWipe() {
-  features.forEach((feature, i) => {
+  // Make sure the next image is above
+  gsap.set(nextEl, { opacity: 0 })
+  gsap.to(nextEl, { opacity: 1, duration: dur, ease: 'power2.out' })
+  if (prevEl) gsap.to(prevEl, { opacity: 0, duration: dur, ease: 'power2.out' })
+
+  activeIndex.value = nextIndex
+}
+
+function setupScrollCrossfade() {
+  // Set initial state: show first image only
+  imageEls.value.forEach((el, i) => gsap.set(el, { opacity: i === 0 ? 1 : 0 }))
+
+  features.forEach((_, i) => {
     ScrollTrigger.create({
       trigger: featureBlocks.value[i],
       start: "top center",
-      end: "+=500",
-      scrub: true,
-      onEnter: () => {
-        direction.value = 1
-        baseImage.value = features[currentIndex.value].image
-        wipeImageSrc.value = features[i].image
-        wipeClipPath.value = 'inset(100% 0 0 0)'
-      },
-      onLeave: () => {
-        currentIndex.value = i
-        baseImage.value = features[i].image
-        wipeImageSrc.value = features[i].image
-        wipeClipPath.value = 'inset(0 0 0 0)'
-      },
-      onEnterBack: () => {
-        direction.value = -1
-        baseImage.value = features[i].image
-        wipeImageSrc.value = features[i - 1 >= 0 ? i - 1 : 0].image
-        wipeClipPath.value = 'inset(0 0 100% 0)'
-      },
-      onLeaveBack: () => {
-        currentIndex.value = i - 1 >= 0 ? i - 1 : 0
-        baseImage.value = features[currentIndex.value].image
-        wipeImageSrc.value = features[i].image
-        wipeClipPath.value = 'inset(100% 0 0 0)'
-      },
-      onUpdate: self => {
-        const progress = self.progress
-        // if (direction.value === 1) {
-        //   wipeClipPath.value = `inset(${100 - progress * 100}% 0 0 0)`
-        // } else {
-        //   wipeClipPath.value = `inset(0 0 ${100 - progress * 100}% 0)`
-        // }
-
-        if (direction.value === 1) {
-          gsap.to(wipeImage.value, {
-            clipPath: `inset(${100 - progress * 100}% 0 0 0)`,
-            overwrite: 'auto',
-            duration: 0.05, // slightly delays to smooth
-            ease: 'none'
-          })
-        } else {
-          gsap.to(wipeImage.value, {
-            clipPath: `inset(0 0 ${100 - progress * 100}% 0)`,
-            overwrite: 'auto',
-            duration: 0.05,
-            ease: 'none'
-          })
-        }
-
-      }
+      end: "bottom center",
+      onEnter: () => fadeTo(i),
+      onEnterBack: () => fadeTo(i),
     })
   })
 }
@@ -240,7 +224,7 @@ function getColorForIndex(index) {
   return colors[index] || "#ffffff"  // fallback
 }
 
-
+let mm
 // SECTION 1 & 2 ANIMATIONS
 // panel animaiton
 function runHeroPanelGsapAnimations() {
@@ -248,36 +232,103 @@ function runHeroPanelGsapAnimations() {
   if (panelTween) panelTween.kill()
   if (kreckTween) kreckTween.kill()
   if (roboticsTween) roboticsTween.kill()
+  mm?.revert?.()
+  mm = gsap.matchMedia()
 
   // Animate panel image: perspective tilt to flat
-  panelTween = gsap.fromTo(
-    panelImageContainer.value,
-    {
-      rotateY: -30,  // start tilted (could use rotateX for forward/back)
-      scale: 2.6,
-      opacity: 0,
-      y: -800,
-      force3D: true,
-      transformPerspective: 1000,
-    },
-    {
-      rotateY: 0,    // flat
-      scale: 1,
-      opacity: 1,
-      y: 50,
-      force3D: true,
-      transformPerspective: 1000,
-      ease: 'sine.out',
-      scrollTrigger: {
-        trigger: firstSection.value,
-        start: 'center 15%',
-        endTrigger: panelSection.value,
-        end: 'center center',
-        scrub: true,
-        // markers: true,
+  mm.add("(max-width: 767px)", () => {
+    panelTween = gsap.fromTo(
+      panelImageContainer.value,
+      {
+        rotateY: -0,  // start tilted (could use rotateX for forward/back)
+        scale: 2.6,
+        opacity: 0,
+        y: -800,
+        force3D: true,
+        transformPerspective: 1000,
+      },
+      {
+        rotateY: 0,    // flat
+        scale: 1,
+        opacity: 1,
+        y: 50,
+        force3D: true,
+        transformPerspective: 1000,
+        ease: 'sine.out',
+        scrollTrigger: {
+          trigger: firstSection.value,
+          start: 'center top',
+          endTrigger: panelSection.value,
+          end: 'center 30%',
+          scrub: true,
+          markers: true,
+        }
       }
-    }
-  )
+    )
+  })
+
+  mm.add("(min-width: 768px)", () => {
+    panelTween = gsap.fromTo(
+      panelImageContainer.value,
+      {
+        rotateY: -0,  // start tilted (could use rotateX for forward/back)
+        scale: 2.6,
+        opacity: 0,
+        y: -800,
+        force3D: true,
+        transformPerspective: 1000,
+      },
+      {
+        rotateY: 0,    // flat
+        scale: 1,
+        opacity: 1,
+        y: 50,
+        force3D: true,
+        transformPerspective: 1000,
+        ease: 'sine.out',
+        scrollTrigger: {
+          trigger: firstSection.value,
+          start: 'center 15%',
+          endTrigger: panelSection.value,
+          end: 'center center',
+          scrub: true,
+          markers: true,
+        }
+      }
+    )
+  })
+
+  // mm.add("(min-width: 768px)", () => {
+  //   mm.add("(max-width: 767px)", () => {
+  //   panelTween = gsap.fromTo(
+  //     panelImageContainer.value,
+  //     {
+  //       rotateY: -0,  // start tilted (could use rotateX for forward/back)
+  //       scale: 2.6,
+  //       opacity: 0,
+  //       y: -800,
+  //       force3D: true,
+  //       transformPerspective: 1000,
+  //     },
+  //     {
+  //       rotateY: 0,    // flat
+  //       scale: 1,
+  //       opacity: 1,
+  //       y: 50,
+  //       force3D: true,
+  //       transformPerspective: 1000,
+  //       ease: 'sine.out',
+  //       scrollTrigger: {
+  //         trigger: firstSection.value,
+  //         start: 'center 15%',
+  //         endTrigger: panelSection.value,
+  //         end: 'center center',
+  //         scrub: true,
+  //         markers: true,
+  //       }
+  //     }
+  //   )
+  // })
 
   kreckTween = gsap.to(kreck.value, {
     x: "-20vw",
@@ -364,25 +415,100 @@ function setupFeatureAnimations() {
 const horizontalSection = ref(null)
 const horizontalContent = ref(null)
 
+// Timeline refs
+const timelineLine = ref(null)
+const dot1 = ref(null)
+const dot2 = ref(null)
+const dot3 = ref(null)
+const dot4 = ref(null)
+const dot5 = ref(null)
+const text1 = ref(null)
+const text2 = ref(null)
+const text3 = ref(null)
+const text4 = ref(null)
+const text5 = ref(null)
+
+// Horizontal panels content
+const hPanels = ref([
+  {
+    image: "/mockup1.png",
+    alt: "Kreck app mockup",
+    bullets: [
+      { title: "Seamless User Experience", text: "Intuitive interface design for effortless navigation" },
+      { title: "Smart Automation",         text: "AI-powered automation for enhanced productivity" },
+      { title: "Real-time Control",        text: "Instant device control and monitoring" },
+      { title: "Secure Connection",        text: "End-to-end encryption for data protection" },
+      { title: "Cloud Integration",        text: "Sync across devices via the cloud" },
+    ],
+  },
+  {
+    image: "/mockup2.png",
+    alt: "Kreck app mockup 2",
+    bullets: [
+      { title: "Scenes & Routines",  text: "Create powerful multi-device scenes" },
+      { title: "Energy Insights",    text: "Track usage and optimize savings" },
+      { title: "Voice Assistants",   text: "Works with popular voice platforms" },
+      { title: "OTA Updates",        text: "New features delivered automatically" },
+      { title: "Local Fallback",     text: "Keeps working even if internet drops" },
+    ],
+  },
+  // Add more panels if you want
+])
+
+// Refs for the horizontal panels & their bullet groups
+const panelEls = ref([])
+const textGroupEls = ref([])
+
+let horizontalTL // timeline handle for the horizontal scroller
+
+
 function setupHorizontalScroll() {
   const panels = horizontalContent.value
   const totalPanels = panels.children.length
 
-  gsap.to(panels, {
-    xPercent: -100 * (totalPanels - 1),
-    ease: "none",
+  horizontalTL = gsap.timeline({
     scrollTrigger: {
       trigger: horizontalSection.value,
       start: "top top",
-      end: () => "+=" + panels.offsetWidth,
+      end: () => "+=" + panels.offsetWidth, // scroll length equals total width
       scrub: 1,
       pin: true,
       anticipatePin: 1,
+      invalidateOnRefresh: true,
     },
   })
+
+  horizontalTL.to(panels, {
+    xPercent: -100 * (totalPanels - 1),
+    ease: "none",
+  })
+
+  return horizontalTL
 }
 
+function setupPanelFadeIns() {
+  if (!horizontalTL) return
+  // Create a trigger for each panel that animates its bullets
+  panelEls.value.forEach((panelEl, i) => {
+    const group = textGroupEls.value[i]
+    if (!panelEl || !group) return
 
+    // start hidden (in case SSR hydration timing)
+    gsap.set(group.children, { opacity: 0, y: 24 })
+
+    ScrollTrigger.create({
+      trigger: panelEl,
+      containerAnimation: horizontalTL,
+      start: "left center",
+      end: "right center",
+      onEnter: () => gsap.to(group.children, { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: "power2.out" }),
+      onEnterBack: () => gsap.to(group.children, { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: "power2.out" }),
+      onLeave: () => gsap.to(group.children, { opacity: 0.1, y: 6, duration: 0.3, stagger: 0.02, ease: "power1.out" }),
+      onLeaveBack: () => gsap.to(group.children, { opacity: 0.1, y: 6, duration: 0.3, stagger: 0.02, ease: "power1.out" }),
+      // markers: true,
+    })
+  })
+}
 
 let mouseX = 0, mouseY = 0
 let panelXSetter, panelYSetter, panelRotateYSetter
@@ -425,57 +551,65 @@ function setupFancyHeadingAnimation() {
 
 
 // 2. Animate Paragraph (Word, Line, or Sentence Reveal)
-function setupFancyParaAnimation() {
-  const paraEl = fancyPara.value;
-  if (!paraEl) return;
+// function setupFancyParaAnimation() {
+//   const paraEl = fancyPara.value;
+//   if (!paraEl) return;
 
-  // Split para by space to each word (or by sentence/line if you want)
-  paraEl.innerHTML = paraEl.textContent
-    .split(' ')
-    .map(word => `<span class="fancy-para-word">${word}</span>`)
-    .join(' ');
+//   // Split para by space to each word (or by sentence/line if you want)
+//   paraEl.innerHTML = paraEl.textContent
+//     .split(' ')
+//     .map(word => `<span class="fancy-para-word">${word}</span>`)
+//     .join(' ');
 
-  const words = paraEl.querySelectorAll('.fancy-para-word');
-  gsap.set(words, { opacity: 0, y: 24 });
-  gsap.to(words, {
-    opacity: 1,
-    y: 0,
-    stagger: 0.04,
-    ease: "power2.out",
-    duration: 0.45,
-    scrollTrigger: {
-      trigger: paraEl,
-      start: "top 90%",
-      once: true,
-    }
-  });
-}
+//   const words = paraEl.querySelectorAll('.fancy-para-word');
+//   gsap.set(words, { opacity: 0, y: 24 });
+//   gsap.to(words, {
+//     opacity: 1,
+//     y: 0,
+//     stagger: 0.04,
+//     ease: "power2.out",
+//     duration: 0.45,
+//     scrollTrigger: {
+//       trigger: paraEl,
+//       start: "top 90%",
+//       once: true,
+//     }
+//   });
+// }
 
 
-onMounted(() => {
+onMounted(async () => {
+  // Set reducedMotion after mounting to avoid SSR issues
+  reducedMotion.value = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false
   
   // ScrollTrigger.defaults({ markers: true, scroller: window })
   // ScrollTrigger.refresh()
 
-  nextTick(() => {
+  nextTick(async () => {
     runHeroPanelGsapAnimations()
     setupFeatureAnimations()
-    setupScrollWipe()
+    await preloadFeatureImages()
+    setupScrollCrossfade()
+
     setupHorizontalScroll()
+    setupPanelFadeIns()  
+
+    // setupTimelineAnimations()
     setupFancyHeadingAnimation()
     setupFancyParaAnimation()
     ScrollTrigger.refresh()
   })
 
   // Set up quick setters for only X and Y
-  panelXSetter = gsap.quickSetter(panelImageContainer.value, 'x', 'px')
-  panelYSetter = gsap.quickSetter(panelImageContainer.value, 'y', 'px')
-
-  
+  if (panelImageContainer.value) {
+    panelXSetter = gsap.quickSetter(panelImageContainer.value, 'x', 'px')
+    panelYSetter = gsap.quickSetter(panelImageContainer.value, 'y', 'px')
+  }
 })
 
 onUnmounted(() => {
   if (panelTween) panelTween.kill()
+  mm?.revert?.()
   ScrollTrigger.getAll().forEach(t => t.kill())
   
   if (panelTween) panelTween.kill()
@@ -498,8 +632,6 @@ onUnmounted(() => {
   -webkit-text-fill-color: white;
   -webkit-text-stroke-width: 5px;
   -webkit-text-stroke-color: #dc2223;
-  text-stroke-width: 5px;
-  text-stroke-color: #dc2223;
 }
 .robotics-font-size {
   line-height: .5;
@@ -508,8 +640,6 @@ onUnmounted(() => {
   -webkit-text-fill-color: white;
   -webkit-text-stroke-width: 5px;
   -webkit-text-stroke-color: #565656;
-  text-stroke-width: 5px;
-  text-stroke-color: #565656;
 }
 
 .product-text-block {
@@ -548,36 +678,212 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* padding: 2rem; */
+}
+
+/* Timeline styles */
+.timeline-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1400px;
+  height: 100%;
+  gap: 4rem;
+}
+
+.mockup-container {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
+  height: 500px;
+}
+
+.mockup-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+/* .timeline-content {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.timeline-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  margin-bottom: 0.5rem;
+} */
+
+/* .timeline-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.timeline-line {
+  stroke-linecap: round;
+} */
+
+/* .timeline-dot {
+  transition: all 0.3s ease;
+  transform-origin: center;
+} */
+
+/* .timeline-texts {
+  position: relative;
+  width: 100%;
+  height: 200px;
+} */
+
+/* .timeline-text-item {
+  position: absolute;
+  top: 0;
+  width: 200px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.3s ease;
+}
+
+.timeline-text-item h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #dc2223;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.timeline-text-item p {
+  font-size: 0.95rem;
+  color: #565656;
+  line-height: 1.4;
+  margin: 0;
+} */
+
+.panel-title {
   font-size: 3rem;
   font-weight: bold;
+  color: #dc2223;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.panel-description {
+  font-size: 1.25rem;
+  color: #565656;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .timeline-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .mockup-container {
+    width: 300px;
+    height: 400px;
+  }
+  
+  /* .timeline-wrapper {
+    height: 80px;
+  }
+  
+  .timeline-text-item {
+    width: 150px;
+  }
+  
+  .timeline-text-item h3 {
+    font-size: 1rem;
+  }
+  
+  .timeline-text-item p {
+    font-size: 0.85rem;
+  } */
+}
+
+@media (max-width: 768px) {
+  .horizontal-panel {
+    padding: 1rem;
+  }
+  
+  .mockup-container {
+    width: 250px;
+    height: 350px;
+  }
+  
+  /* .timeline-texts {
+    height: 150px;
+  }
+  
+  .timeline-text-item {
+    width: 120px;
+  } */
+  
+  .panel-title {
+    font-size: 2rem;
+  }
+  
+  .panel-description {
+    font-size: 1rem;
+  }
 }
 
 /* horizontal scroll css ends */
 
 /* heading and para panel section animaiton */
-.fancy-heading {
+/* .fancy-heading {
   text-align: center;
-  white-space: nowrap; /* Prevent line breaks */
+  white-space: nowrap; 
 }
 .fancy-heading-letter {
   display: inline-block;
   font-size: inherit;
   line-height: 1.1;
   vertical-align: baseline;
-  transform: translateZ(0); /* GPU boost for Chrome */
+  transform: translateZ(0); 
   backface-visibility: hidden;
-  /* optional: margin-right: 0.02em; */
-}
+} */
 
-.fancy-para-word {
+/* .fancy-para-word {
   display: inline-block;
   margin-right: 0.22em;
-}
+} */
 
 .image-pin-wrap {
   /* This div is not flex or grid! */
   position: relative;
   height: 100vh;
+}
+
+.crossfade-stage {
+  position: relative;
+  width: 600px;
+  height: 420px;
+}
+
+.crossfade-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* or contain, your choice */
+  opacity: 0;        /* GSAP will control */
+  will-change: opacity, transform;
 }
 
 </style>
