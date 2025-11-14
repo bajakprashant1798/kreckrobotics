@@ -4,27 +4,123 @@
     "slug": "wireless-lamp",
     "name": "Wireless Lamp",
     "description": "A smart wireless lamp with dimmable light.",
-    "image": "/images/products/panel.png"
+    "images": [
+      "/images/products/panel.png",
+      "/images/products/panel1.png",
+      "/images/products/panel2.jpg"
+    ],
+    "colors": {
+      "gold": {
+        "images": [
+          "/images/products/panel1.png",
+          "/images/products/panel2.jpg"
+        ]
+      },
+      "silver": {
+        "images": [
+          "/images/products/panel.png",
+          "/images/products/panel2.jpg"
+        ]
+      },
+      "white": {
+        "images": [
+          "/images/products/panel.png",
+          "/images/products/panel1.png"
+        ]
+      }
+    }
   },
   {
     "id": 2,
     "slug": "bluetooth-speaker",
     "name": "Bluetooth Speaker",
     "description": "Portable speaker with powerful sound.",
-    "image": "/images/products/panel2.jpg"
+    "images": [
+      "/images/products/panel.png",
+      "/images/products/panel1.png",
+      "/images/products/panel2.jpg"
+    ],
+    "colors": {
+      "gold": {
+        "images": [
+          "/images/products/panel1.png",
+          "/images/products/panel2.jpg"
+        ]
+      },
+      "silver": {
+        "images": [
+          "/images/products/panel.png",
+          "/images/products/panel2.jpg"
+        ]
+      },
+      "white": {
+        "images": [
+          "/images/products/panel.png",
+          "/images/products/panel1.png"
+        ]
+      }
+    }
   },
   {
     "id": 3,
-    "slug": "bluetooth-speaker2",
-    "name": "Bluetooth Speaker2",
+    "slug": "bluetooth-speaker1",
+    "name": "Bluetooth Speaker1",
     "description": "Portable speaker with powerful sound.2",
-    "image": "/images/products/panel1.png"
+    "images": [
+      "/images/products/panel.png",
+      "/images/products/panel1.png",
+      "/images/products/panel2.jpg"
+    ],
+    "colors": {
+      "gold": {
+        "images": [
+          "/images/products/panel1.png",
+          "/images/products/panel2.jpg"
+        ]
+      },
+      "silver": {
+        "images": [
+          "/images/products/panel.png",
+          "/images/products/panel2.jpg"
+        ]
+      },
+      "white": {
+        "images": [
+          "/images/products/panel.png",
+          "/images/products/panel1.png"
+        ]
+      }
+    }
   },
   {
     "id": 4,
     "slug": "bluetooth-speaker2",
     "name": "Bluetooth Speaker2",
     "description": "Portable speaker with powerful sound.2",
-    "image": "/images/products/panel1.png"
+    "images": [
+      "/images/products/panel.png",
+      "/images/products/panel1.png",
+      "/images/products/panel2.jpg"
+    ],
+    "colors": {
+      "gold": {
+        "images": [
+          "/images/products/panel1.png",
+          "/images/products/panel2.jpg"
+        ]
+      },
+      "silver": {
+        "images": [
+          "/images/products/panel.png",
+          "/images/products/panel2.jpg"
+        ]
+      },
+      "white": {
+        "images": [
+          "/images/products/panel.png",
+          "/images/products/panel1.png"
+        ]
+      }
+    }
   }
 ]

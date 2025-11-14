@@ -8,12 +8,19 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/icon',
     '@nuxt/fonts',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/supabase'
   ],
 
   css: [
     '~/assets/global.css'    // <--- This line includes your CSS globally!
   ],
+
+  supabase: {
+    url: process.env.NUXT_PUBLIC_SUPABASE_URL,
+    key: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY,
+    redirect: false, // we’ll handle auth redirects ourselves
+  },
 
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },

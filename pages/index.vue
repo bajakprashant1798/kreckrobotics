@@ -115,9 +115,103 @@
 
 
   <!-- FINAL VERTICAL SECTION -->
-  <section class="min-h-screen flex items-center justify-center bg-gray-100">
+  <!-- <section class="min-h-screen flex items-center justify-center bg-gray-100">
     <h2 class="text-4xl font-bold">Final Vertical Section</h2>
+  </section> -->
+
+  <!-- WHY CHOOSE (Tailwind-only) -->
+  <section id="why" class="px-6 md:px-10 lg:px-20 py-16 md:py-24 bg-white">
+    <!-- Head -->
+    <div class="max-w-5xl mx-auto text-center mb-12 md:mb-16">
+      <p class="text-sm md:text-base uppercase tracking-widest text-[#dc2223] font-semibold">
+        Why Choose KRECK Smart Homes?
+      </p>
+      <h2 class="mt-3 text-2xl md:text-4xl font-extrabold text-[#23272b] leading-tight">
+        We turn homes into intelligent spaces that enhance comfort and simplify everyday life
+      </h2>
+    </div>
+
+    <!-- Feature Cards -->
+    <div
+      class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+      ref="whyGrid"
+    >
+      <div
+        v-for="(item, i) in whyItems"
+        :key="i"
+        class="group flex items-start gap-4 rounded-2xl border border-gray-100 p-6 md:p-7 shadow-sm hover:shadow-md transition-shadow bg-white"
+      >
+        <img
+          :src="item.icon"
+          :alt="item.alt"
+          loading="lazy"
+          class="h-12 w-12 shrink-0 object-contain"
+        />
+        <div>
+          <h3 class="text-xl font-bold leading-snug text-[#23272b]">
+            {{ item.titleTop }}
+            <br />
+            <span class="text-[#dc2223]">{{ item.titleAccent }}</span>
+          </h3>
+          <p class="mt-2 text-[15px] leading-snug text-[#565656]">
+            {{ item.text }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Separator -->
+    <div class="max-w-6xl mx-auto my-12 md:my-16 border-t border-gray-200"></div>
+
+    <!-- Head 2 -->
+    <div class="max-w-4xl mx-auto text-center mb-8 md:mb-10">
+      <h2 class="text-2xl md:text-4xl font-extrabold text-[#23272b]">Best in Class Smart Home Devices</h2>
+      <p class="mt-2 text-sm md:text-base text-[#565656]">compatible with</p>
+    </div>
+
+    <!-- Brand rows -->
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 items-center justify-items-center">
+        <img
+          v-for="(b, i) in brandRow1"
+          :key="'b1-' + i"
+          :src="b.src"
+          :alt="b.alt"
+          :title="b.title"
+          loading="lazy"
+          class="h-8 md:h-10 object-contain opacity-90 hover:opacity-100 transition-opacity"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 items-center justify-items-center mt-8">
+        <img
+          v-for="(b, i) in brandRow2"
+          :key="'b2-' + i"
+          :src="b.src"
+          :alt="b.alt"
+          :title="b.title"
+          loading="lazy"
+          class="h-8 md:h-10 object-contain opacity-90 hover:opacity-100 transition-opacity"
+        />
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-12 md:mt-16 flex justify-center">
+      <a href="#getInTouchFormNew">
+        <button
+          id="cta3"
+          class="inline-flex items-center gap-2 rounded-full bg-[#dc2223] text-white px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold shadow-sm hover:shadow-md active:scale-[0.99] transition"
+        >
+          Talk to an Expert
+          <img src="https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/rightroundarrow.svg" alt="" class="h-4 w-4 md:h-5 md:w-5" loading="lazy" />
+        </button>
+      </a>
+    </div>
   </section>
+
+  <TestimonialsSection />
+
 
   </div>
 </template>
@@ -127,8 +221,63 @@ import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { tr } from '@nuxt/ui/runtime/locale/index.js'
+import TestimonialsSection from '~/components/TestimonialsSection.vue'
 
 gsap.registerPlugin(ScrollTrigger)
+
+
+// WHY CHOOSE content
+const whyItems = [
+  {
+    icon: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/easy-installation.png",
+    alt: "Easy Installation",
+    titleTop: "Easy",
+    titleAccent: "Installation",
+    text: "Switches and devices so effortless to install, they’re ready in no time!",
+  },
+  {
+    icon: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/no-drilling.png",
+    alt: "No Drilling No Wiring",
+    titleTop: "No Drilling. No Wiring",
+    titleAccent: "Needed",
+    text: "Wireless setups with minimal effort—automation without the mess.",
+  },
+  {
+    icon: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/completely-wireless.png",
+    alt: "Completely Wireless",
+    titleTop: "Completely",
+    titleAccent: "Wireless",
+    text: "Say goodbye to messy cables—hello beautiful, uncluttered interiors.",
+  },
+  {
+    icon: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/voice-controlled.png",
+    alt: "Voice Controlled",
+    titleTop: "Voice",
+    titleAccent: "Controlled",
+    text: "Control your home with simple voice commands—hands-free comfort.",
+  },
+]
+
+// Brand rows
+const brandRow1 = [
+  { src: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/works-with-apple-homekit.png", alt: "Compatible with Apple Homekit", title: "Apple Homekit" },
+  { src: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/works-with-samsung-smartthings.png", alt: "Compatible with Samsung SmartThings", title: "Samsung SmartThings" },
+  { src: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/works-with-sonos-wireless-audio.png", alt: "Compatible with Sonos", title: "Sonos" },
+  { src: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/works-with-google-home.png", alt: "Compatible with Google Home", title: "Google Home" },
+  { src: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/works-with-ifttt.png", alt: "Compatible with IFTTT", title: "IFTTT" },
+  { src: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/works-with-amazon-alexa.png", alt: "Compatible with Amazon Alexa", title: "Amazon Alexa" },
+]
+
+const brandRow2 = [
+  { src: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/works-with-zigbee-3.0.png", alt: "Compatible with Zigbee 3.0", title: "Zigbee 3.0" },
+  { src: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/works-with-home-assistant.png", alt: "Compatible with Home Assistant", title: "Home Assistant" },
+  { src: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/works-with-apple-airplay.png", alt: "Compatible with Apple Airplay", title: "Apple Airplay" },
+  { src: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/works-with-matter.png", alt: "Compatible with Matter", title: "Matter" },
+  { src: "https://d2ibglgkljrdv5.cloudfront.net/mumbai/homeNew/works-with-thread.png", alt: "Compatible with Thread", title: "Thread" },
+]
+
+
+
 
 const features = [
   {
@@ -353,6 +502,21 @@ function runHeroPanelGsapAnimations() {
     }
   })
 }
+
+const whyGrid = ref(null)
+
+function setupWhyReveal() {
+  if (!whyGrid?.value) return
+  const cards = whyGrid.value.children
+  gsap.set(cards, { opacity: 0, y: 16 })
+  ScrollTrigger.batch(cards, {
+    start: "top 85%",
+    onEnter: (els) => gsap.to(els, {
+      opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power2.out"
+    }),
+  })
+}
+
 
 
 // GSAP scroll logic
@@ -592,7 +756,8 @@ onMounted(async () => {
     setupScrollCrossfade()
 
     setupHorizontalScroll()
-    setupPanelFadeIns()  
+    setupPanelFadeIns()
+    setupWhyReveal()
 
     // setupTimelineAnimations()
     setupFancyHeadingAnimation()
