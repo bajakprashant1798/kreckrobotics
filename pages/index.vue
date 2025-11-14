@@ -90,7 +90,7 @@
         <div class="mx-auto w-full max-w-[1400px] h-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center px-6">
           <!-- Left: image -->
           <div class="flex items-center justify-center">
-            <img :src="p.image" :alt="p.alt" class="max-h-[420px] md:max-h-[420px] lg:max-h-[520px] w-auto object-contain" />
+            <img :src="p.image" :alt="p.alt" class="max-h-[320px] md:max-h-[420px] lg:max-h-[520px] w-auto object-contain" />
           </div>
 
           <!-- Right: bullets -->
