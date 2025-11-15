@@ -11,14 +11,120 @@
     ></div>
 
     <!-- HERO -->
-    <div ref="firstSection" class="md:min-h-screen flex flex-col md:justify-center items-center bg-white w-full px-2">
+    <!-- <div ref="firstSection" class="min-h-5/12 md:min-h-screen flex flex-col md:justify-center items-center bg-white w-full px-2">
       <div class="md:flex-1 flex flex-col md:justify-center w-full">
         <h1 ref="kreck" class="block w-full kreck-font-size text-center font-extrabold font-open-sans leading-[1] tracking-tight">KRECK</h1>
       </div>
       <div class="md:flex-1 flex flex-col justify-start w-full">
         <h1 ref="robotics" class="block w-full robotics-font-size text-center font-extrabold uppercase font-open-sans text-[#565656] leading-[1] tracking-tight">ROBOTICS</h1>
       </div>
-    </div>
+    </div> -->
+    <section ref="firstSection" class="px-6 md:px-12 py-12 md:py-24 flex items-center bg-white">
+      <div class="max-w-7xl mx-auto">
+        <!-- grid: stack on mobile, two columns on md+ -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+          <!-- LEFT: text/content -->
+          <div class="order-1 md:order-1">
+            <div class="flex flex-wrap items-center gap-3 mb-6 text-sm font-semibold text-[#dc2223]">
+              <span class="flex items-center gap-2">
+                <CheckCircle class="h-4 w-4 flex-shrink-0" />
+                <span class="hidden sm:inline">Smart Control</span>
+                <span class="inline sm:hidden">Control</span>
+              </span>
+
+              <span class="flex items-center gap-2">
+                <CheckCircle class="h-4 w-4 flex-shrink-0" />
+                <span class="hidden sm:inline">Customization</span>
+                <span class="inline sm:hidden">Custom</span>
+              </span>
+
+              <span class="flex items-center gap-2">
+                <CheckCircle class="h-4 w-4 flex-shrink-0" />
+                <span class="hidden sm:inline">Voice Activation</span>
+                <span class="inline sm:hidden">Voice</span>
+              </span>
+            </div>
+
+            <div class="mb-8">
+              <h1 class="font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6 text-gray-900">
+                Ultimate Home Intelligent<br class="hidden sm:block" />Automation Solution
+              </h1>
+
+              <p class="text-gray-600 text-sm sm:text-base max-w-2xl">
+                Experience Effortless Living with Cutting-Edge Technology, Seamlessly integrating convenience,
+                efficiency, and security into every aspect of your home life from Hommatic.
+              </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:gap-8 mb-8">
+              <div class="flex-shrink-0">
+                <button
+                  class="inline-flex items-center gap-3 rounded-full relative cursor-pointer
+                        px-5 py-2.5 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold
+                        bg-[#dc2223] text-white overflow-hidden group transition-all duration-300
+                        hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#dc2223]/30"
+                  aria-label="Get Started"
+                >
+                  <!-- sliding background -->
+                  <span
+                    class="absolute inset-0 bg-[#b81b1c] -translate-x-full group-hover:translate-x-0
+                          transition-transform duration-300 pointer-events-none"
+                    aria-hidden="true"
+                  />
+                  <span class="relative z-10 flex items-center gap-2">
+                    Get Started
+                    <RightCircle class="h-4 w-4 sm:h-5 sm:w-5 text-white transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </button>
+              </div>
+
+              <div class="mt-4 sm:mt-0 flex flex-col ">
+                <div class="text-2xl sm:text-3xl font-extrabold">500+</div>
+                <div class="text-sm text-gray-600">Compatible Devices</div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="flex items-start gap-4">
+                <div
+                  class="flex items-center justify-center rounded-full border-2 p-3 w-14 h-14 sm:w-16 sm:h-16"
+                  aria-hidden="true"
+                >
+                  <EnergyCircle class="h-8 w-8 sm:h-10 sm:w-10" />
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Energy Efficiency</p>
+                  <p class="text-sm text-gray-600">Reduce energy consumption with intelligent automation.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div
+                  class="flex items-center justify-center rounded-full border-2 p-3 w-14 h-14 sm:w-16 sm:h-16"
+                  aria-hidden="true"
+                >
+                  <Lock class="h-8 w-8 sm:h-10 sm:w-10" />
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Security Integration</p>
+                  <p class="text-sm text-gray-600">Enhance security with smart surveillance and monitoring.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: image -->
+          <div class="order-2 md:order-2 flex items-center justify-center">
+            <img
+              src="/herosection1.png"
+              alt="Kreck Smart Home panel"
+              class="w-full max-w-lg rounded-2xl object-cover shadow-lg"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- PANEL SECTION -->
     <section ref="panelSection" class="relative secondSection py-12 px-8 lg:p-24 md:min-h-screen flex flex-col items-center justify-center">
@@ -38,8 +144,14 @@
     </section>
 
     <!-- Features Section (Pinned Image with Text Scroll) -->
-    <section ref="featuresContainer" :style="`height: ${(features.length * 75)}vh;`">
+        <!-- Features Section (Desktop – pinned image + text scroll) -->
+    <section
+      ref="featuresContainer"
+      class="hidden md:block"
+      :style="`height: ${(features.length * 75)}vh;`"
+    >
       <div class="grid grid-cols-2 max-w-screen-xl mx-auto px-8">
+        <!-- Text column -->
         <div>
           <div
             v-for="(feature, i) in features"
@@ -47,13 +159,22 @@
             :ref="el => featureBlocks[i] = el"
             class="product-text-block"
           >
-            <h2>{{ feature.title }}</h2>
-            <p>{{ feature.text }}</p>
+            <h2 class="text-3xl font-bold text-gray-900 mb-3">
+              {{ feature.title }}
+            </h2>
+            <p class="text-sm md:text-base text-gray-600 leading-relaxed">
+              {{ feature.text }}
+            </p>
           </div>
         </div>
 
+        <!-- Pinned image column -->
         <div class="image-pin-wrap">
-          <div ref="imageWrapper" class="w-full flex items-center justify-center h-[100vh]" style="will-change: transform;">
+          <div
+            ref="imageWrapper"
+            class="w-full flex items-center justify-center h-[100vh]"
+            style="will-change: transform;"
+          >
             <div class="crossfade-stage">
               <img
                 v-for="(f, i) in features"
@@ -66,7 +187,34 @@
             </div>
           </div>
         </div>
+      </div>
+    </section>
 
+    <!-- Features Section (Mobile – stacked cards, fade-up on scroll) -->
+    <section
+      ref="featuresMobileContainer"
+      class="md:hidden bg-white py-12 px-6 space-y-10"
+    >
+      <div
+        v-for="(feature, i) in features"
+        :key="'m-' + i"
+        :ref="el => mobileFeatureBlocks[i] = el"
+        class="flex flex-col items-center text-center opacity-0 translate-y-8"
+      >
+        <div class="w-full max-w-md mb-4">
+          <img
+            :src="feature.image"
+            :alt="feature.title"
+            class="w-full rounded-2xl shadow-md"
+            loading="lazy"
+          />
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">
+          {{ feature.title }}
+        </h3>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          {{ feature.text }}
+        </p>
       </div>
     </section>
 
@@ -94,7 +242,7 @@
           </div>
 
           <!-- Right: bullets -->
-          <div class="space-y-6" :ref="el => textGroupEls[i] = el">
+          <div class="space-y-6 flex flex-col justify-center items-center md:items-start" :ref="el => textGroupEls[i] = el">
             <div
               v-for="(b, j) in p.bullets"
               :key="j"
@@ -222,6 +370,10 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { tr } from '@nuxt/ui/runtime/locale/index.js'
 import TestimonialsSection from '~/components/TestimonialsSection.vue'
+import CheckCircle from '~/components/icons/CheckCircle.vue'
+import RightCircle from '~/components/icons/RightCircle.vue'
+import Lock from '~/components/icons/Lock.vue'
+import EnergyCircle from '~/components/icons/EnergyCircle.vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -299,6 +451,10 @@ const features = [
 
 const featureBlocks = ref([])
 const featuresContainer = ref(null)
+
+const featuresMobileContainer = ref(null)
+const mobileFeatureBlocks = ref([])
+
 const imageWrapper = ref(null)
 
 const firstSection = ref(null)
@@ -315,6 +471,8 @@ const fancyPara = ref(null)
 const imageEls = ref(new Array(features.length).fill(null))  // properly initialized array
 const activeIndex = ref(0)       // which image is currently visible
 const reducedMotion = ref(false) // will be set in onMounted to avoid SSR issues
+
+
 
 function preloadFeatureImages() {
   return Promise.all(features.map(f => {
@@ -344,20 +502,25 @@ function fadeTo(nextIndex) {
 }
 
 function setupScrollCrossfade() {
-  // Set initial state: show first image only
-  imageEls.value.forEach((el, i) => gsap.set(el, { opacity: i === 0 ? 1 : 0 }))
+  if (!mm) return
 
-  features.forEach((_, i) => {
-    ScrollTrigger.create({
-      trigger: featureBlocks.value[i],
-      start: "top center",
-      end: "bottom center",
-      onEnter: () => fadeTo(i),
-      onEnterBack: () => fadeTo(i),
+  mm.add("(min-width: 768px)", () => {
+    // Set initial state: show first image only
+    imageEls.value.forEach((el, i) =>
+      gsap.set(el, { opacity: i === 0 ? 1 : 0 })
+    )
+
+    features.forEach((_, i) => {
+      ScrollTrigger.create({
+        trigger: featureBlocks.value[i],
+        start: "top center",
+        end: "bottom center",
+        onEnter: () => fadeTo(i),
+        onEnterBack: () => fadeTo(i),
+      })
     })
   })
 }
-
 
 
 
@@ -392,7 +555,7 @@ function runHeroPanelGsapAnimations() {
         rotateY: -0,  // start tilted (could use rotateX for forward/back)
         scale: 2.6,
         opacity: 0,
-        y: -800,
+        y: -200,
         force3D: true,
         transformPerspective: 1000,
       },
@@ -406,9 +569,9 @@ function runHeroPanelGsapAnimations() {
         ease: 'sine.out',
         scrollTrigger: {
           trigger: firstSection.value,
-          start: 'center top',
+          start: 'bottom center',
           endTrigger: panelSection.value,
-          end: 'center 30%',
+          end: 'center center',
           scrub: true,
           markers: true,
         }
@@ -521,57 +684,85 @@ function setupWhyReveal() {
 
 // GSAP scroll logic
 function setupFeatureAnimations() {
-  // Pin the image column
-  ScrollTrigger.create({
-    trigger: featuresContainer.value,
-    start: "top top",
-    // end: () => `+=${(features.length - 0.1) * window.innerHeight}`,
-    end: () => `+=${(features.length * 0.45) * window.innerHeight}`,
-    pin: imageWrapper.value,
-    pinSpacing: true,
-    scrub: false,
-    // markers: true,
-    // markers: {
-    //   startColor: "blue",
-    //   endColor: "purple",
-    //   fontSize: "12px",
-    //   indent: 20,
-    // },
-  })
+  if (!mm) return
 
-  featureBlocks.value.forEach((el, index) => {
-    // Animate title scroll
-    gsap.fromTo(el, { y: 150 }, {
-      y: -150,
-      ease: "none",
-      scrollTrigger: {
-        trigger: el,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
+  // DESKTOP: pin image + background color + vertical scroll of text
+  mm.add("(min-width: 768px)", () => {
+    if (!featuresContainer.value || !imageWrapper.value) return
 
-        // markers: {
-        //   startColor: "orange",
-        //   endColor: "pink",
-        //   fontSize: "12px",
-        //   indent: 20,
-        // },
-      }
+    // Pin the image column
+    ScrollTrigger.create({
+      trigger: featuresContainer.value,
+      start: "top top",
+      end: () => `+=${(features.length * 0.45) * window.innerHeight}`,
+      pin: imageWrapper.value,
+      pinSpacing: true,
+      // markers: true,
     })
 
+    // Scroll text blocks up/down + change background
+    featureBlocks.value.forEach((el, index) => {
+      if (!el) return
 
+      gsap.fromTo(
+        el,
+        { y: 150 },
+        {
+          y: -150,
+          ease: "none",
+          scrollTrigger: {
+            trigger: el,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            // markers: true,
+          }
+        }
+      )
 
-    // Optionally: change background
-    ScrollTrigger.create({
-      trigger: el,
-      start: "top center",
-      end: "bottom center",
-      onEnter: () => {
-        featuresContainer.value.style.backgroundColor = getColorForIndex(index)
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top center",
+        end: "bottom center",
+        onEnter: () => {
+          featuresContainer.value.style.backgroundColor = getColorForIndex(index)
+        },
+        onEnterBack: () => {
+          featuresContainer.value.style.backgroundColor = getColorForIndex(index)
+        }
+      })
+    })
+  })
+
+  // MOBILE: stacked cards, fade-up on scroll
+  mm.add("(max-width: 767px)", () => {
+    if (!mobileFeatureBlocks.value.length) return
+
+    // initial state already set in template (opacity-0, translate-y-8),
+    // but we re-assert here in case of resize.
+    gsap.set(mobileFeatureBlocks.value, { opacity: 0, y: 32 })
+
+    ScrollTrigger.batch(mobileFeatureBlocks.value, {
+      start: "top 85%",
+      onEnter: (els) => {
+        gsap.to(els, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.15,
+          ease: "power2.out",
+        })
       },
-      onEnterBack: () => {
-        featuresContainer.value.style.backgroundColor = getColorForIndex(index)
-      }
+      onLeaveBack: (els) => {
+        gsap.to(els, {
+          opacity: 0,
+          y: 32,
+          duration: 0.4,
+          stagger: 0.05,
+          ease: "power1.out",
+        })
+      },
+      // markers: true,
     })
   })
 }
