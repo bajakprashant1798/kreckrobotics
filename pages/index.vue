@@ -19,7 +19,7 @@
         <h1 ref="robotics" class="block w-full robotics-font-size text-center font-extrabold uppercase font-open-sans text-[#565656] leading-[1] tracking-tight">ROBOTICS</h1>
       </div>
     </div> -->
-    <section ref="firstSection" class="px-6 md:px-12 py-12 md:py-24 flex items-center bg-white">
+    <section ref="firstSection" class="px-6 md:px-12 py-12 md:py-16 flex items-center bg-white">
       <div class="max-w-7xl mx-auto">
         <!-- grid: stack on mobile, two columns on md+ -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
@@ -116,9 +116,9 @@
           <!-- RIGHT: image -->
           <div class="order-2 md:order-2 flex items-center justify-center">
             <img
-              src="/herosection1.png"
+              src="/herosection.png"
               alt="Kreck Smart Home panel"
-              class="w-full max-w-lg rounded-2xl object-cover shadow-lg"
+              class="w-full object-cover"
               loading="lazy"
             />
           </div>
