@@ -573,7 +573,7 @@ function runHeroPanelGsapAnimations() {
           endTrigger: panelSection.value,
           end: 'center center',
           scrub: true,
-          markers: true,
+          //markers: true,
         }
       }
     )
@@ -604,7 +604,7 @@ function runHeroPanelGsapAnimations() {
           endTrigger: panelSection.value,
           end: 'center center',
           scrub: true,
-          markers: true,
+          // markers: true,
         }
       }
     )
