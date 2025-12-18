@@ -8,19 +8,23 @@
         '-translate-y-full': !showNav,
       }"
     >
-      <div class="flex items-center justify-between mx-5 my-3 px-8 md:px-8 py-4 bg-[#f8f4f4] rounded-2xl shadow-md">
+    <!-- px-8 py-4 mx-5 my-3 bg-[#f8f4f4] md:bg-transparent rounded-2xl md:rounded-none shadow-md md:shadow-[0] -->
+    <!-- mx-5 my-3 px-8 md:px-8 py-4 md:bg-auto sm:bg-[#f8f4f4] rounded-2xl sm:shadow-sm -->
+      <div class="flex items-center justify-between mx-5 my-3 px-8 md:px-8 py-4 bg-[#f8f4f4] rounded-2xl shadow-md transition-all duration-300">
         <div class="flex items-center">
           <NuxtLink to="/" class="flex items-center" @click.prevent="goHome">
             <img src="/KRACK-ROBOTICS-LOGO.png" alt="Krackrobotics logo"
             class="h-10 w-auto mr-4 select-none logo" draggable="false" />
           </NuxtLink>
         </div>
-        <nav class="hidden md:flex items-center space-x-6 text-lg font-semibold">
-          <NuxtLink to="/" @click.prevent="goHome" class="hover:text-[#dc2223] transition-colors">Home</NuxtLink>
-          <NuxtLink to="/products" class="hover:text-[#dc2223] transition-colors">Products</NuxtLink>
-          <NuxtLink to="/about" class="hover:text-[#dc2223] transition-colors">About Us</NuxtLink>
-          <NuxtLink to="/contact" class="hover:text-[#dc2223] transition-colors">Contact Us</NuxtLink>
+        <nav class="hidden md:flex items-center space-x-6 text-lg text-white  bg-[#181818] rounded-4xl shadow-md px-3 py-2 ">
+          <NuxtLink to="/" @click.prevent="goHome" class="rounded-4xl px-3 py-2 hover:bg-white hover:text-black transition-all duration-300">Home</NuxtLink>
+          <!-- <NuxtLink to="/products" class="rounded-4xl px-3 py-2 hover:bg-white hover:text-black transition-all duration-300">Products</NuxtLink> -->
+          <!-- <NuxtLink to="/about" class="rounded-4xl px-3 py-2 hover:bg-white hover:text-black transition-all duration-300">About Us</NuxtLink> -->
         </nav>
+        <div class="hidden md:flex items-center space-x-6 text-lg font-semibold">
+          <NuxtLink to="/contact" class="hover:text-[#dc2223] transition-all duration-300">Contact Us</NuxtLink>
+        </div>
         <button @click="showMobileMenu = !showMobileMenu"
           class="md:hidden ml-auto z-50 p-2 focus:outline-none cursor-pointer">
           <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" stroke-width="2"

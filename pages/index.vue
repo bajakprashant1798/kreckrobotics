@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- BG Gradient -->
-    <div
+    <!-- <div
       class="fixed inset-0 -z-10 pointer-events-none"
       style="background:
         radial-gradient(ellipse 70% 50% at 55% 35%, #dc22230A 28vw, transparent 100%),
         radial-gradient(ellipse 70% 50% at 40% 80%, #56565607 25vw, transparent 100%);
         opacity: 1;"
       ref="movingBg"
-    ></div>
+    ></div> -->
 
     <!-- HERO -->
     <!-- <div ref="firstSection" class="min-h-5/12 md:min-h-screen flex flex-col md:justify-center items-center bg-white w-full px-2">
@@ -46,7 +46,7 @@
             </div>
 
             <div class="mb-8">
-              <h1 class="font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6 text-gray-900">
+              <h1 class="font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-5 text-gray-900">
                 Ultimate Home Intelligent<br class="hidden sm:block" />Automation Solution
               </h1>
 
@@ -56,35 +56,7 @@
               </p>
             </div>
 
-            <div class="flex flex-col sm:flex-row sm:items-center sm:gap-8 mb-8">
-              <div class="flex-shrink-0">
-                <button
-                  class="inline-flex items-center gap-3 rounded-full relative cursor-pointer
-                        px-5 py-2.5 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold
-                        bg-[#dc2223] text-white overflow-hidden group transition-all duration-300
-                        hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#dc2223]/30"
-                  aria-label="Get Started"
-                >
-                  <!-- sliding background -->
-                  <span
-                    class="absolute inset-0 bg-[#b81b1c] -translate-x-full group-hover:translate-x-0
-                          transition-transform duration-300 pointer-events-none"
-                    aria-hidden="true"
-                  />
-                  <span class="relative z-10 flex items-center gap-2">
-                    Get Started
-                    <RightCircle class="h-4 w-4 sm:h-5 sm:w-5 text-white transition-transform duration-300 group-hover:translate-x-1" />
-                  </span>
-                </button>
-              </div>
-
-              <div class="mt-4 sm:mt-0 flex flex-col ">
-                <div class="text-2xl sm:text-3xl font-extrabold">500+</div>
-                <div class="text-sm text-gray-600">Compatible Devices</div>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
               <div class="flex items-start gap-4">
                 <div
                   class="flex items-center justify-center rounded-full border-2 p-3 w-14 h-14 sm:w-16 sm:h-16"
@@ -94,7 +66,7 @@
                 </div>
                 <div>
                   <p class="font-semibold text-gray-900">Energy Efficiency</p>
-                  <p class="text-sm text-gray-600">Reduce energy consumption with intelligent automation.</p>
+                  <p class="text-sm text-gray-600">Reduce energy consumption with intelligent automation</p>
                 </div>
               </div>
 
@@ -107,11 +79,73 @@
                 </div>
                 <div>
                   <p class="font-semibold text-gray-900">Security Integration</p>
-                  <p class="text-sm text-gray-600">Enhance security with smart surveillance and monitoring.</p>
+                  <p class="text-sm text-gray-600">Enhance security with smart surveillance and monitoring</p>
                 </div>
               </div>
             </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
+              <div class="flex items-start gap-4">
+                <div
+                  class="flex items-center justify-center rounded-full border-2 p-3 w-14 h-14 sm:w-16 sm:h-16"
+                  aria-hidden="true"
+                >
+                  <IconsMobileApp class="h-8 w-8 sm:h-10 sm:w-10" />
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Glitch-Proof App Ecosystem</p>
+                  <p class="text-sm text-gray-600">Company’s Own Mobile App & Glitch Proof Cloud  System</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div
+                  class="flex items-center justify-center rounded-full border-2 p-3 w-14 h-14 sm:w-16 sm:h-16"
+                  aria-hidden="true"
+                >
+                  <IconsSavings class="h-8 w-8 sm:h-10 sm:w-10" />
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">High Savings, Zero Risk</p>
+                  <p class="text-sm text-gray-600">Provides  Savings upto 70% & Guaranteed 30%</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+              <div class="flex items-start gap-4">
+                <div
+                  class="flex items-center justify-center rounded-full border-2 p-3 w-14 h-14 sm:w-16 sm:h-16"
+                  aria-hidden="true"
+                >
+                  <IconsUpdate class="h-8 w-8 sm:h-10 sm:w-10" />
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Free Updates, New Features</p>
+                  <p class="text-sm text-gray-600">Regular software updates to enhance your experience</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div
+                  class="flex items-center justify-center rounded-full border-2 p-3 w-14 h-14 sm:w-16 sm:h-16"
+                  aria-hidden="true"
+                >
+                  <IconsWarranty class="h-8 w-8 sm:h-10 sm:w-10" />
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">9 Yrs. Of Warranty</p>
+                  <p class="text-sm text-gray-600">Get worry-free performance backed by a 9-year warranty</p>
+                </div>
+              </div>
+            </div>
+
+            <PrimaryButton
+              label="Get Started"
+              href="contact"
+            />
           </div>
+          
 
           <!-- RIGHT: image -->
           <div class="order-2 md:order-2 flex items-center justify-center">
@@ -126,8 +160,10 @@
       </div>
     </section>
 
+
+
     <!-- PANEL SECTION -->
-    <section ref="panelSection" class="relative secondSection py-12 px-8 lg:p-24 md:min-h-screen flex flex-col items-center justify-center">
+    <section ref="panelSection" class="relative secondSection bg-[#f8f4f4] py-12 px-8 lg:p-24 md:min-h-screen flex flex-col items-center justify-center">
       <!-- <div class="flex flex-col items-center justify-center"> -->
         <h2 ref="fancyHeading" class="text-4xl font-bold font-[#565656] fancy-heading">Touch Panel</h2>
         <div ref="panelImageContainer" class="flex flex-col items-center justify-center" style="will-change: transform, opacity;">
@@ -148,9 +184,9 @@
     <section
       ref="featuresContainer"
       class="hidden md:block"
-      :style="`height: ${(features.length * 75)}vh;`"
+      :style="`height: ${(features.length * 100)}vh;`"
     >
-      <div class="grid grid-cols-2 max-w-screen-xl mx-auto px-8">
+      <div class="grid grid-cols-2 gap-2 max-w-screen-xl mx-auto">
         <!-- Text column -->
         <div>
           <div
@@ -159,12 +195,20 @@
             :ref="el => featureBlocks[i] = el"
             class="product-text-block"
           >
-            <h2 class="text-3xl font-bold text-gray-900 mb-3">
+            <h2 class="text-6xl font-bold text-white">
               {{ feature.title }}
             </h2>
-            <p class="text-sm md:text-base text-gray-600 leading-relaxed">
+            <h2 class="text-6xl font-bold text-white mb-3">
+              {{ feature.subTitle }}
+            </h2>
+            <p class="text-sm md:text-xl text-white max-w-full md:max-w-md leading-relaxed mb-3">
               {{ feature.text }}
             </p>
+
+            <PrimaryButton
+              label="know more"
+              :href="feature.link"
+            />
           </div>
         </div>
 
@@ -181,7 +225,7 @@
                 :key="i"
                 :src="f.image"
                 :ref="el => { if (el) imageEls[i] = el }"
-                class="crossfade-img rounded-2xl shadow-2xl"
+                class="crossfade-img rounded-2xl"
                 alt=""
               />
             </div>
@@ -374,6 +418,8 @@ import CheckCircle from '~/components/icons/CheckCircle.vue'
 import RightCircle from '~/components/icons/RightCircle.vue'
 import Lock from '~/components/icons/Lock.vue'
 import EnergyCircle from '~/components/icons/EnergyCircle.vue'
+import PrimaryButton from '~/components/ui/PrimaryButton.vue'
+import { link } from '#build/ui'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -433,20 +479,51 @@ const brandRow2 = [
 
 const features = [
   {
-    title: "Our Products 1",
-    text: "Explore our innovative solutions designed to enhance your life.",
-    image: "/panel.png",
+    title: "King Series",
+    subTitle: "Touch Panel",
+    text: "The pinnacle of sophistication. Sleek touch panel switches that blends luxury with seamless home automation.",
+    link: "contact",
+    image: "/images/products/king_touch_panel/k_touch_panel.png",
   },
   {
-    title: "Our Products 2",
-    text: "Explore our innovative solutions designed to enhance your life.",
-    image: "/panel1.png",
+    title: "Royal Series",
+    subTitle: "Touch Panel",
+    text: "Intelligent design meets effortless control. Touch and dimmer functionality for a smarter, more elegant living.",
+    link: "contact",
+    image: "/images/products/royal_touch_panel/r_touch_panel.png",
   },
   {
-    title: "Our Products 3",
+    title: "Smart Series",
+    subTitle: "Retrofit Switch",
+    text: "Classic made contemporary. Transform your existing switches into smart, automated elegance without compromise.",
+    link: "contact",
+    image: "/images/products/smart_retrofit/s_retrofit.png",
+  },
+  {
+    title: "Sensor Hub",
     text: "Explore our innovative solutions designed to enhance your life.",
-    image: "/panel2.jpg",
-  }
+    link: "contact",
+    image: "/images/products/sensor_hub/sensor_hub.png",
+  },
+  {
+    title: "Digital Door Lock",
+    text: "Classic made contemporary. Transform your existing switches into smart, automated elegance without compromise.",
+    link: "contact",
+    image: "/images/products/door_lock/door_lock.png",
+  },
+  {
+    title: "Door Window &",
+    subTitle: "Cuboart Sensor Alert",
+    text: "Classic made contemporary. Transform your existing switches into smart, automated elegance without compromise.",
+    link: "contact",
+    image: "/images/products/panel1.png",
+  },
+  {
+    title: "Automatic Curtain",
+    text: "Classic made contemporary. Transform your existing switches into smart, automated elegance without compromise.",
+    link: "contact",
+    image: "/images/products/automatic_curtain/automatic_curtain.png",
+  },
 ]
 
 const featureBlocks = ref([])
@@ -529,11 +606,12 @@ let panelTween, kreckTween, roboticsTween
 
 function getColorForIndex(index) {
   const colors = [
-    "#fff6f6",  // For block 0
-    "#f0f8ff",  // For block 1
-    "#e6ffe6",  // For block 2
+    "#00071b", // warm soft cream
+    "#0142ab", // cool soft blue
+    "#022e67", // mint green
+    "#001453", // soft purple
   ]
-  return colors[index] || "#ffffff"  // fallback
+  return colors[index % colors.length]
 }
 
 let mm
@@ -680,7 +758,16 @@ function setupWhyReveal() {
   })
 }
 
+function animateBgColor(color) {
+  if (!featuresContainer.value) return
 
+  gsap.to(featuresContainer.value, {
+    backgroundColor: color,
+    duration: 0.8,
+    ease: "power2.out",
+    overwrite: "auto"
+  })
+}
 
 // GSAP scroll logic
 function setupFeatureAnimations() {
@@ -694,7 +781,7 @@ function setupFeatureAnimations() {
     ScrollTrigger.create({
       trigger: featuresContainer.value,
       start: "top top",
-      end: () => `+=${(features.length * 0.45) * window.innerHeight}`,
+      end: () => `+=${(features.length * 0.85) * window.innerHeight}`,
       pin: imageWrapper.value,
       pinSpacing: true,
       // markers: true,
@@ -724,12 +811,14 @@ function setupFeatureAnimations() {
         trigger: el,
         start: "top center",
         end: "bottom center",
-        onEnter: () => {
-          featuresContainer.value.style.backgroundColor = getColorForIndex(index)
-        },
-        onEnterBack: () => {
-          featuresContainer.value.style.backgroundColor = getColorForIndex(index)
-        }
+        // onEnter: () => {
+        //   featuresContainer.value.style.backgroundColor = getColorForIndex(index)
+        // },
+        // onEnterBack: () => {
+        //   featuresContainer.value.style.backgroundColor = getColorForIndex(index)
+        // }
+        onEnter: () => animateBgColor(getColorForIndex(index)),
+        onEnterBack: () => animateBgColor(getColorForIndex(index)),
       })
     })
   })
@@ -999,7 +1088,7 @@ onUnmounted(() => {
 }
 
 .product-text-block {
-  min-height: 70vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1237,7 +1326,7 @@ onUnmounted(() => {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* or contain, your choice */
+  object-fit: contain; /* or contain, your choice */
   opacity: 0;        /* GSAP will control */
   will-change: opacity, transform;
 }
