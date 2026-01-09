@@ -80,7 +80,10 @@
                 <div class=" flex items-center"><spam class="mr-2 bg-[#565656] shadow-md rounded-full p-2"><Icon name="mdi:phone" class="text-xl text-white block" /></spam> <p class="text-gray-600"><NuxtLink to="tel:75187 57518" class="hover:text-[#dc2223] transition-colors">+91 75187 57518</NuxtLink></p></div>
                 </li>
                 <li class="mb-2">
-                <div class=" flex items-center"><spam class="mr-2 bg-[#565656] shadow-md rounded-full p-2 inline-block"><Icon name="mdi:map-marker" class="text-xl text-white block" /></spam> <p class="text-gray-600">1234 Street Name, City, State, 12345</p></div>
+                <div class=" flex items-start"><spam class="mr-2 bg-[#565656] shadow-md rounded-full p-2 inline-block"><Icon name="mdi:map-marker" class="text-xl text-white block" /></spam> <p class="text-gray-600">410 RK world tower 
+Near shital park chowk
+150ft ring road rajkot
+360006</p></div>
                 </li>
             </ul>
             </div>

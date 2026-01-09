@@ -18,7 +18,7 @@
           </NuxtLink>
         </div>
         <nav class="hidden md:flex items-center space-x-6 text-lg text-white  bg-[#181818] rounded-4xl shadow-md px-3 py-2 ">
-          <NuxtLink to="/" @click.prevent="goHome" class="rounded-4xl px-3 py-2 hover:bg-white hover:text-black transition-all duration-300">Home</NuxtLink>
+          <NuxtLink to="/" @click.prevent="goHome" class="rounded-4xl px-3 py-2 bg-[#262626] hover:bg-white hover:text-black transition-all duration-300">Home</NuxtLink>
           <!-- <NuxtLink to="/products" class="rounded-4xl px-3 py-2 hover:bg-white hover:text-black transition-all duration-300">Products</NuxtLink> -->
           <!-- <NuxtLink to="/about" class="rounded-4xl px-3 py-2 hover:bg-white hover:text-black transition-all duration-300">About Us</NuxtLink> -->
         </nav>

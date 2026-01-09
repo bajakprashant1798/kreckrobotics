@@ -501,15 +501,21 @@ const features = [
   },
   {
     title: "Sensor Hub",
-    text: "Explore our innovative solutions designed to enhance your life.",
+    text: "Smart power saving mode, workflow support, and seamless integration with smart home systems.",
     link: "contact",
     image: "/images/products/sensor_hub/sensor_hub.png",
   },
   {
     title: "Digital Door Lock",
-    text: "Classic made contemporary. Transform your existing switches into smart, automated elegance without compromise.",
+    text: "Classic made contemporary. Transform your existing switches into smart, automated elegance without compromise. (Made in China)",
     link: "contact",
     image: "/images/products/door_lock/door_lock.png",
+  },
+  {
+    title: "Intruder Alert Sensor",
+    text: "Classic made contemporary. Transform your existing switches into smart, automated elegance without compromise. (Made in China)",
+    link: "contact",
+    image: "/images/products/intruder_alert/intruder_alert.png",
   },
   {
     title: "Door Window &",
@@ -781,7 +787,7 @@ function setupFeatureAnimations() {
     ScrollTrigger.create({
       trigger: featuresContainer.value,
       start: "top top",
-      end: () => `+=${(features.length * 0.85) * window.innerHeight}`,
+      end: () => `+=${(features.length * 0.88) * window.innerHeight}`,
       pin: imageWrapper.value,
       pinSpacing: true,
       // markers: true,
